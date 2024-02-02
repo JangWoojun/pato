@@ -1,5 +1,6 @@
 package com.woojun.pato.auth
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
@@ -16,5 +17,11 @@ class SignUpActivity : AppCompatActivity() {
         val statusBarColor = ContextCompat.getColor(this, R.color.blue)
         window.statusBarColor = statusBarColor
 
+        // TODO 모든 필드를 만족해야 이동하도록 수정
+
+        binding.signUpButton.setOnClickListener {
+            startActivity(Intent(this@SignUpActivity, ProfileActivity::class.java))
+            finishAffinity()
+        }
     }
 }

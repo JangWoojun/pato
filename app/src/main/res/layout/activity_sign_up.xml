@@ -297,12 +297,9 @@
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
-            android:gravity="center"
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="320dp"
-            android:layout_marginTop="19dp"
-            android:layout_marginBottom="20dp"
+            android:layout_height="350dp"
             app:layout_constraintBottom_toBottomOf="@id/email_box"
             app:layout_constraintEnd_toStartOf="@id/id_box"
             app:layout_constraintStart_toStartOf="parent"
@@ -310,6 +307,7 @@
 
 
             <androidx.cardview.widget.CardView
+                android:layout_marginTop="20dp"
                 android:id="@+id/id_circle"
                 app:cardElevation="0dp"
                 android:backgroundTint="@color/blue"
@@ -318,11 +316,12 @@
                 android:layout_height="11dp"/>
 
             <LinearLayout
+                android:layout_gravity="center"
                 android:orientation="vertical"
                 android:id="@+id/id_line"
                 android:background="@color/blue"
                 android:layout_width="1dp"
-                android:layout_height="65dp"/>
+                android:layout_height="64dp"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/password_circle"
@@ -333,11 +332,12 @@
                 android:layout_height="11dp"/>
 
             <LinearLayout
+                android:layout_gravity="center"
                 android:orientation="vertical"
                 android:id="@+id/password_line"
                 android:background="@color/G3"
                 android:layout_width="1dp"
-                android:layout_height="65dp"/>
+                android:layout_height="64dp"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/name_circle"
@@ -348,11 +348,12 @@
                 android:layout_height="11dp"/>
 
             <LinearLayout
+                android:layout_gravity="center"
                 android:orientation="vertical"
                 android:id="@+id/name_line"
                 android:background="@color/G3"
                 android:layout_width="1dp"
-                android:layout_height="65dp"/>
+                android:layout_height="64dp"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/call_circle"
@@ -363,14 +364,15 @@
                 android:layout_height="11dp"/>
 
             <LinearLayout
+                android:layout_gravity="center"
                 android:orientation="vertical"
                 android:id="@+id/call_line"
                 android:background="@color/G3"
                 android:layout_width="1dp"
-                android:layout_height="65dp"/>
+                android:layout_height="64dp"/>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/emaill_circle"
+                android:id="@+id/email_circle"
                 app:cardElevation="0dp"
                 android:backgroundTint="@color/G3"
                 app:cardCornerRadius="11dp"

@@ -1,5 +1,6 @@
 package com.woojun.pato.auth
 
+import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.woojun.pato.databinding.ActivityLoginBinding
@@ -10,5 +11,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.underlineText.paintFlags = Paint.UNDERLINE_TEXT_FLAG
     }
 }

@@ -1,5 +1,6 @@
 package com.woojun.pato.auth
 
+import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,5 +14,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.underlineText.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        binding.signUpButton.setOnClickListener {
+            startActivity(Intent(this@LoginActivity, SignUpActivity::class.java))
+        }
     }
 }

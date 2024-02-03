@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.woojun.pato.R
 import com.woojun.pato.databinding.FragmentChatBinding
 
 class ChatFragment : Fragment() {
@@ -41,6 +43,10 @@ class ChatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.userRecycler.layoutManager = LinearLayoutManager(requireContext())
         binding.userRecycler.adapter = UserAdapter(list)
+
+        binding.hiddenButton.setOnClickListener {
+            findNavController().navigate(R.id.hiddenFragment)
+        }
     }
 
     override fun onDestroyView() {

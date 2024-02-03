@@ -1,5 +1,6 @@
 package com.woojun.pato.chat
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,8 +12,8 @@ class UserAdapter(private val userList: MutableList<User>): RecyclerView.Adapter
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = UserItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return UserViewHolder(binding).also { handler->
-            binding.apply {
-
+            binding.userItem.setOnClickListener {
+                parent.context.startActivity(Intent(parent.context, ChattingActivity::class.java))
             }
         }
     }

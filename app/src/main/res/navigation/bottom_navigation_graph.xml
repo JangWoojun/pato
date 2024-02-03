@@ -20,4 +20,14 @@
         android:name="com.woojun.pato.myInfo.MyInfoFragment"
         android:label="fragment_my_info"
         tools:layout="@layout/fragment_my_info" />
+    <fragment
+        android:id="@+id/chattingFragment"
+        android:name="com.woojun.pato.chat.ChattingFragment"
+        android:label="fragment_chatting"
+        tools:layout="@layout/fragment_chatting" />
+    <fragment
+        android:id="@+id/hiddenFragment"
+        android:name="com.woojun.pato.chat.HiddenFragment"
+        android:label="fragment_hidden"
+        tools:layout="@layout/fragment_hidden" />
 </navigation>

@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         binding.chat.setOnClickListener {
             navController.navigate(R.id.chatFragment, null,
                 NavOptions.Builder()
-                    .setPopUpTo(R.id.chatFragment, false)
+                    .setPopUpTo(R.id.bottom_navigation_graph, false)
                     .build())
         }
         binding.myInfo.setOnClickListener {

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/store"
+        android:enabled="true"
+        android:icon="@drawable/bottom_menu_1"
+        android:title="스토어"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/chat"
+        android:enabled="true"
+        android:icon="@drawable/bottom_menu_2"
+        android:title="채팅"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/myInfo"
+        android:enabled="true"
+        android:icon="@drawable/bottom_menu_3"
+        android:title="내 정보"
+        app:showAsAction="always" />
+</menu>

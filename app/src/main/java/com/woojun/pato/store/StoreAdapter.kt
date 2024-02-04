@@ -1,5 +1,7 @@
 package com.woojun.pato.store
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +14,9 @@ class StoreAdapter(private val storeList: MutableList<Store>): RecyclerView.Adap
         val binding = StoreItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return StoreViewHolder(binding).also { handler->
             binding.apply {
-
+                storeItem.setOnClickListener {
+                    parent.context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(storeList[handler.position].url)))
+                }
             }
         }
     }

@@ -1,6 +1,6 @@
 package com.woojun.pato.chat
 
-data class User (
+data class UserInfo (
     val image: String,
     val name: String,
     val time: String,

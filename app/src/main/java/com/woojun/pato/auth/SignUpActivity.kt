@@ -5,7 +5,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -13,8 +12,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.woojun.pato.R
+import com.woojun.pato.auth.AuthUtil.isEmailValid
 import com.woojun.pato.auth.AuthUtil.isIdValid
 import com.woojun.pato.auth.AuthUtil.isPasswordValid
+import com.woojun.pato.auth.AuthUtil.isPhoneNumberValid
 import com.woojun.pato.auth.AuthUtil.isRealNameValid
 import com.woojun.pato.databinding.ActivitySignUpBinding
 
@@ -113,7 +114,7 @@ class SignUpActivity : AppCompatActivity() {
 
         binding.callInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if (isRealNameValid(binding.callInput.text.toString())) {
+                if (isPhoneNumberValid(binding.callInput.text.toString())) {
                     binding.emailInput.isEnabled = true
                     binding.callInput.isEnabled = false
 
@@ -132,7 +133,7 @@ class SignUpActivity : AppCompatActivity() {
 
         binding.emailInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if (isRealNameValid(binding.emailInput.text.toString())) {
+                if (isEmailValid(binding.emailInput.text.toString())) {
                     binding.signUpButton.isEnabled = true
                     binding.emailInput.isEnabled = false
 

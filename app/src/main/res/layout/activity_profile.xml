@@ -63,10 +63,16 @@
             app:strokeColor="#D1D3DD">
 
             <ImageView
+                android:id="@+id/imageView1"
                 android:layout_gravity="center"
                 android:src="@drawable/profile_icon"
                 android:layout_width="42dp"
                 android:layout_height="52dp"/>
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
         </com.google.android.material.card.MaterialCardView>
 

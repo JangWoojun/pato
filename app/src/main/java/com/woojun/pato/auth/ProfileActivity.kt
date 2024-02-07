@@ -16,11 +16,18 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.woojun.pato.MainActivity
 import com.woojun.pato.R
+import com.woojun.pato.auth.AuthUtil.getUid
+import com.woojun.pato.database.AppDatabase
 import com.woojun.pato.databinding.ActivityProfileBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
     private var sex = "남성"
+    private var date = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
@@ -28,6 +35,10 @@ class ProfileActivity : AppCompatActivity() {
 
         val statusBarColor = ContextCompat.getColor(this, R.color.blue)
         window.statusBarColor = statusBarColor
+
+        binding.profileButton.setOnClickListener {
+
+        }
 
         binding.finishButton.isEnabled = false
 
@@ -111,8 +122,21 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         binding.finishButton.setOnClickListener {
-            startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
-            finishAffinity()
+            CoroutineScope(Dispatchers.IO).launch {
+                val db = AppDatabase.getDatabase(this@ProfileActivity)
+                val user = User(
+                    getUid(),
+                    binding.nicknameInput.text.toString(),
+                    date,
+                    sex,
+                    binding.locationInput.text.toString()
+                )
+                db?.userDao()!!.insertUser(user)
+                withContext(Dispatchers.Main) {
+                    startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
+                    finishAffinity()
+                }
+            }
         }
     }
 
@@ -123,6 +147,7 @@ class ProfileActivity : AppCompatActivity() {
         val datePickerDialog = DatePickerDialog(
             this,
             { _, selectedYear, _, _ ->
+                date = selectedYear.toString()
                 binding.ageInput.text = "${selectedYear}년생 (만 ${currentYear - selectedYear}세)"
                 binding.ageInput.setTextColor(Color.parseColor("#5666FF"))
                 binding.ageBox.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#5666FF")))

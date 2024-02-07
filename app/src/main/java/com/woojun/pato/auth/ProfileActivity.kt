@@ -5,15 +5,25 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.icu.util.Calendar
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import com.woojun.pato.MainActivity
 import com.woojun.pato.R
 import com.woojun.pato.auth.AuthUtil.getUid
@@ -26,18 +36,33 @@ import kotlinx.coroutines.withContext
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
+    private lateinit var storage: FirebaseStorage
+
     private var sex = "남성"
     private var date = ""
+    private lateinit var imageUri: Uri
+    private var profileImageUrl = ""
+
+    private val getContent: ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                imageUri = it
+                uploadImageToFirebaseStorage()
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        storage = Firebase.storage
+
         val statusBarColor = ContextCompat.getColor(this, R.color.blue)
         window.statusBarColor = statusBarColor
 
         binding.profileButton.setOnClickListener {
-
+            getContent.launch("image/*")
         }
 
         binding.finishButton.isEnabled = false
@@ -126,6 +151,7 @@ class ProfileActivity : AppCompatActivity() {
                 val db = AppDatabase.getDatabase(this@ProfileActivity)
                 val user = User(
                     getUid(),
+                    profileImageUrl,
                     binding.nicknameInput.text.toString(),
                     date,
                     sex,
@@ -167,7 +193,7 @@ class ProfileActivity : AppCompatActivity() {
     private fun isFinish() {
         if (
             binding.nicknameInput.text.isNotEmpty() && binding.ageInput.text != "태어난 연도를 선택해주세요..."
-            && binding.locationInput.text != "지역을 선택해주세요..."
+            && binding.locationInput.text != "지역을 선택해주세요..." && profileImageUrl != ""
         ) {
             binding.finishButton.isEnabled = true
             binding.finishButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5666FF"))
@@ -176,5 +202,28 @@ class ProfileActivity : AppCompatActivity() {
             binding.finishButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#C4C4C4"))
             binding.nicknameBox.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#C4C4C4")))
         }
+    }
+
+    private fun uploadImageToFirebaseStorage() {
+        val storageReference = storage.reference.child("profile/${getUid()}.jpg")
+
+        storageReference.putFile(imageUri)
+            .addOnSuccessListener {taskSnapshot ->
+                val downloadUrl = taskSnapshot.metadata?.reference?.downloadUrl
+                if (downloadUrl != null) {
+                    profileImageUrl = downloadUrl.toString()
+
+                    binding.imageView1.visibility = View.GONE
+                    Glide.with(this@ProfileActivity)
+                        .load(imageUri)
+                        .apply(RequestOptions
+                            .centerCropTransform()
+                        )
+                        .into(binding.imageView2)
+                }
+            }
+            .addOnFailureListener { _ ->
+                Toast.makeText(this@ProfileActivity, "이미지 업로드를 실패하였습니다", Toast.LENGTH_SHORT).show()
+            }
     }
 }

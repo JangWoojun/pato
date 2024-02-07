@@ -299,7 +299,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="350dp"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@id/email_box"
             app:layout_constraintEnd_toStartOf="@id/id_box"
             app:layout_constraintStart_toStartOf="parent"
@@ -307,7 +307,7 @@
 
 
             <androidx.cardview.widget.CardView
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="19dp"
                 android:id="@+id/id_circle"
                 app:cardElevation="0dp"
                 android:backgroundTint="@color/blue"
@@ -321,7 +321,7 @@
                 android:id="@+id/id_line"
                 android:background="@color/blue"
                 android:layout_width="1dp"
-                android:layout_height="64dp"/>
+                android:layout_height="65dp"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/password_circle"
@@ -337,7 +337,7 @@
                 android:id="@+id/password_line"
                 android:background="@color/G3"
                 android:layout_width="1dp"
-                android:layout_height="64dp"/>
+                android:layout_height="65dp"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/name_circle"
@@ -353,7 +353,7 @@
                 android:id="@+id/name_line"
                 android:background="@color/G3"
                 android:layout_width="1dp"
-                android:layout_height="64dp"/>
+                android:layout_height="65dp"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/call_circle"
@@ -369,9 +369,10 @@
                 android:id="@+id/call_line"
                 android:background="@color/G3"
                 android:layout_width="1dp"
-                android:layout_height="64dp"/>
+                android:layout_height="65dp"/>
 
             <androidx.cardview.widget.CardView
+                android:layout_marginBottom="20dp"
                 android:id="@+id/email_circle"
                 app:cardElevation="0dp"
                 android:backgroundTint="@color/G3"

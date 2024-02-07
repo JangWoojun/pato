@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class User(
     @PrimaryKey
     val uid: String,
+    val imageUrl: String = "",
     val nickname: String,
     val age: String,
     val sex: String,

@@ -1,6 +1,13 @@
 package com.woojun.pato.auth
 
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
 object AuthUtil {
+    fun getUid(): String {
+        val auth = Firebase.auth
+        return auth.uid.toString()
+    }
     fun isIdValid(id: String): Boolean {
         // 아이디는 영어와 숫자가 섞여야 하며 7자리 이상
         val regex = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{7,}\$")

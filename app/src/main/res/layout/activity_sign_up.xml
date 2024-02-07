@@ -337,7 +337,7 @@
                 android:id="@+id/password_line"
                 android:background="@color/G3"
                 android:layout_width="1dp"
-                android:layout_height="65dp"/>
+                android:layout_height="64dp"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/name_circle"
@@ -353,7 +353,7 @@
                 android:id="@+id/name_line"
                 android:background="@color/G3"
                 android:layout_width="1dp"
-                android:layout_height="65dp"/>
+                android:layout_height="64dp"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/call_circle"
@@ -369,7 +369,7 @@
                 android:id="@+id/call_line"
                 android:background="@color/G3"
                 android:layout_width="1dp"
-                android:layout_height="65dp"/>
+                android:layout_height="63dp"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_marginBottom="20dp"

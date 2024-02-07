@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import com.woojun.pato.database.AppDatabase
 import com.woojun.pato.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -73,5 +74,10 @@ class MainActivity : AppCompatActivity() {
                     .build())
         }
 
+    }
+
+    override fun onDestroy() {
+        AppDatabase.destroyInstance()
+        super.onDestroy()
     }
 }

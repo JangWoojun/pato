@@ -15,7 +15,6 @@ class LoginActivity : AppCompatActivity() {
 
         binding.underlineText.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         binding.signUpButton.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, SignUpActivity::class.java))
         }
     }
 }

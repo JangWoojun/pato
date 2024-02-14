@@ -58,7 +58,7 @@ class ProfileActivity : AppCompatActivity() {
 
         storage = Firebase.storage
 
-        val statusBarColor = ContextCompat.getColor(this, R.color.blue)
+        val statusBarColor = ContextCompat.getColor(this, R.color.primary)
         window.statusBarColor = statusBarColor
 
         binding.profileButton.setOnClickListener {

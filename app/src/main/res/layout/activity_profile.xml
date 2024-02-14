@@ -134,7 +134,7 @@
                     android:fontFamily="@font/suit_medium"
                     android:hint="닉네임을 입력해주세요..."
                     android:inputType="text"
-                    android:textColor="@color/blue"
+                    android:textColor="@color/primary"
                     android:textColorHint="@color/G3"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"

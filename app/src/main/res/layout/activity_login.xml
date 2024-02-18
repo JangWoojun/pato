@@ -9,6 +9,7 @@
     tools:context=".auth.LoginActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -149,7 +150,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="67dp"
-            android:layout_marginEnd="27dp"
+            android:layout_marginEnd="39dp"
             android:backgroundTint="#f8ffffff"
             app:cardCornerRadius="15dp"
             app:cardElevation="10dp"
@@ -255,9 +256,10 @@
                 android:layout_height="match_parent">
 
                 <ImageView
+                    android:id="@+id/imageView6"
                     android:layout_width="35dp"
                     android:layout_height="43dp"
-                    android:layout_marginStart="37dp"
+                    android:layout_marginStart="57dp"
                     android:src="@drawable/kakao_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -271,9 +273,9 @@
                     android:text="카카오톡으로 로그인"
                     android:textColor="@color/black"
                     android:textSize="16sp"
+                    android:layout_marginStart="42.5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView6"
                     app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -281,6 +283,38 @@
 
         </androidx.cardview.widget.CardView>
 
+        <ImageView
+            android:elevation="10dp"
+            android:id="@+id/imageView3"
+            android:layout_marginBottom="31dp"
+            android:layout_marginEnd="-20dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/login_icon_1"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView"
+            app:layout_constraintEnd_toEndOf="@+id/cardView" />
+
+        <ImageView
+            android:elevation="10dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginStart="-12dp"
+            android:id="@+id/imageView4"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/login_icon_2"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+            app:layout_constraintStart_toStartOf="@+id/cardView2" />
+
+        <ImageView
+            android:elevation="10dp"
+            android:id="@+id/imageView5"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginStart="-25dp"
+            android:src="@drawable/login_icon_3"
+            app:layout_constraintStart_toEndOf="@+id/cardView3"
+            app:layout_constraintTop_toTopOf="@+id/cardView3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

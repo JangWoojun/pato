@@ -44,7 +44,16 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val isEdit = intent.getBooleanExtra("isEdit", false)
 
+        if (isEdit) {
+            binding.editText1.visibility = View.VISIBLE
+            binding.editText2.visibility = View.VISIBLE
+        } else {
+            binding.signUpText1.visibility = View.VISIBLE
+            binding.signUpText2.visibility = View.VISIBLE
+            binding.signUpText3.visibility = View.VISIBLE
+        }
 
         val statusBarColor = ContextCompat.getColor(this, R.color.primary)
         window.statusBarColor = statusBarColor

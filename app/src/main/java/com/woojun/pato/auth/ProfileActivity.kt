@@ -1,228 +1,151 @@
 package com.woojun.pato.auth
 
-import android.app.DatePickerDialog
-import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.icu.util.Calendar
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.widget.PopupWindow
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.cardview.widget.CardView
+import android.widget.AdapterView
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
-import com.woojun.pato.MainActivity
 import com.woojun.pato.R
-import com.woojun.pato.auth.AuthUtil.getUid
-import com.woojun.pato.database.AppDatabase
 import com.woojun.pato.databinding.ActivityProfileBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
-    private lateinit var storage: FirebaseStorage
 
-    private var sex = "남성"
-    private var date = ""
-    private lateinit var imageUri: Uri
-    private var profileImageUrl = ""
+    private val citiesList = listOf("서울특별시","부산광역시","대구광역시","인천광역시", "광주광역시", "대전광역시", "울산광역시", "세종특별자치시", "경기도", "강원특별자치도", "충청북도", "충청남도", "전북특별자치도", "전라남도", "경상북도", "경상남도", "제주특별자치도", "시/도")
+    private val townMap = mapOf(
+        "서울특별시" to listOf("종로구", "중구", "용산구", "성동구", "광진구", "동대문구", "중랑구", "성북구", "강북구", "도봉구", "노원구", "은평구", "서대문구", "마포구", "양천구", "강서구", "구로구", "금천구", "영등포구", "동작구", "관악구", "서초구", "강남구", "송파구", "강동구", "시/군/구"),
+        "부산광역시" to listOf("중구", "서구", "동구", "영도구", "부산진구", "동래구", "남구", "북구", "해운대구", "사하구", "금정구", "강서구", "연제구", "수영구", "사상구", "기장군", "시/군/구"),
+        "대구광역시" to listOf("중구", "동구", "서구", "남구", "북구", "수성구", "달서구", "달성군", "군위군", "시/군/구"),
+        "인천광역시" to listOf("중구", "동구", "미추홀구", "연수구", "남동구", "부평구", "계양구", "서구", "강화군", "옹진군", "시/군/구"),
+        "광주광역시" to listOf("동구", "서구", "남구", "북구", "광산구", "시/군/구"),
+        "대전광역시" to listOf("동구", "중구", "서구", "유성구", "대덕구", "시/군/구"),
+        "울산광역시" to listOf("중구", "남구", "동구", "북구", "울주군", "시/군/구"),
+        "세종특별자치시" to listOf("세종시", "시/군/구"),
+        "경기도" to listOf("수원시", "용인시", "고양시", "화성시", "성남시", "부천시", "남양주시", "안산시", "평택시", "안양시", "흥시", "파주시", "김포시", "의정부시", "광주시", "하남시", "광명시", "군포시", "양주시", "오산시", "이천시", "안성시", "구리시", "의왕시", "포천시", "양평군", "여주시", "동두천시", "과천시", "가평군", "연천군", "시/군/구"),
+        "강원특별자치도" to listOf("춘천시", "원주시", "강릉시", "동해시", "태백시", "속초시", "삼척시", "홍천군", "횡성군", "영월군", "평창군", "정선군", "철원군", "화천군", "양구군", "인제군", "고성군", "양양군", "시/군/구"),
+        "충청북도" to listOf("청주시", "충주시", "제천시", "보은군", "옥천군", "영동군", "증평군", "진천군", "괴산군", "음성군", "단양군", "시/군/구"),
+        "충청남도" to listOf("천안시", "공주시", "보령시", "아산시", "서산시", "논산시", "계룡시", "당진시", "금산군", "부여군", "서천군", "청양군", "홍성군", "예산군", "태안군", "시/군/구"),
+        "전북특별자치도" to listOf("전주시", "군산시", "익산시", "정읍시", "남원시", "김제시", "완주군", "진안군", "무주군", "장수군", "임실군", "순창군", "고창군", "부안군", "시/군/구"),
+        "전라남도" to listOf("목포시", "여수시", "순천시", "나주시", "광양시", "담양군", "곡성군", "구례군", "고흥군", "보성군", "화순군", "장흥군", "강진군", "해남군", "영암군", "무안군", "함평군", "영광군", "장성군", "완도군", "진도군", "신안군", "시/군/구"),
+        "경상북도" to listOf("포항시", "경주시", "김천시", "안동시", "구미시", "영주시", "영천시", "상주시", "문경시", "경산시", "의성군", "청송군", "영양군", "영덕군", "청도군", "고령군", "성주군", "칠곡군", "예천군", "봉화군", "울진군", "울릉군", "시/군/구"),
+        "경상남도" to listOf("창원시", "진주시", "통영시", "사천시", "김해시", "밀양시", "거제시", "양산시", "의령군", "함안군", "창녕군", "고성군", "남해군", "하동군", "산청군", "함양군", "거창군", "합천군", "시/군/구"),
+        "제주특별자치도" to listOf("제주시", "서귀포시", "시/군/구"),
+    )
+    private val alcoholList = listOf("선택 없음", "소주 0.5병 이하", "소주 1병", "소주 2병", "소주 3병", "소주 4병", "소주 5병", "소주 5병 이상", "소주 기준")
 
-    private val getContent: ActivityResultLauncher<String> =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri?.let {
-                imageUri = it
-                uploadImageToFirebaseStorage()
-            }
-        }
+
+    private var location1 = ""
+    private var location2 = ""
+    private var alcohol = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        storage = Firebase.storage
+
 
         val statusBarColor = ContextCompat.getColor(this, R.color.primary)
         window.statusBarColor = statusBarColor
 
-        binding.profileButton.setOnClickListener {
-            getContent.launch("image/*")
-        }
+        val location1Adapter = DropDownAdapter<String>(this@ProfileActivity)
+        location1Adapter.setDropDownViewResource(R.layout.spinner_item)
+        location1Adapter.submitList(citiesList)
 
+        val location2Adapter = DropDownAdapter<String>(this@ProfileActivity)
+        location2Adapter.setDropDownViewResource(R.layout.spinner_item)
+        location2Adapter.submitList(townMap["서울특별시"]!!)
 
-        binding.nicknameInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+        binding.locationSpinner1.adapter = location1Adapter
+        binding.locationSpinner1.setSelection(location1Adapter.count)
 
-            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
-            }
+        binding.locationSpinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                if (position != location1Adapter.count) {
+                    val selectedItem = parent.getItemAtPosition(position).toString()
+                    location1 = selectedItem
 
-            override fun afterTextChanged(editable: Editable?) {
-                binding.nicknameInput.setTextColor(Color.parseColor("#5666FF"))
-                binding.nicknameBox.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#5666FF")))
-                isFinish()
-            }
-        })
+                    binding.locationSpinner1.setBackgroundResource(R.drawable.dropdown_selected_background)
+                    location2Adapter.submitList(townMap[selectedItem]!!)
 
-//        binding.ageBox.setOnClickListener {
-//            showYearPickerDialog()
-//            isFinish()
-//        }
-//
-//        binding.manButton.setOnClickListener {
-//            it.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5666FF"))
-//            binding.womanButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#C4C4C4"))
-//            sex = "남성"
-//        }
-//
-//        binding.womanButton.setOnClickListener {
-//            it.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5666FF"))
-//            binding.manButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#C4C4C4"))
-//            sex = "여성"
-//        }
-
-        val layoutInflater = LayoutInflater.from(this@ProfileActivity)
-        val popupView = layoutInflater.inflate(R.layout.dropdown_menu, null)
-        val popupWindow = PopupWindow(
-            popupView,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-//        binding.locationBox.setOnClickListener {
-//            popupWindow.showAsDropDown(it)
-//        }
-//
-//        popupView.findViewById<CardView>(R.id.gangnam_box).setOnClickListener {
-//            binding.locationInput.text = "서울특별시 강남구"
-//            binding.locationInput.setTextColor(Color.parseColor("#5666FF"))
-//            popupWindow.dismiss()
-//            isFinish()
-//        }
-//
-//        popupView.findViewById<CardView>(R.id.gangbuk_box).setOnClickListener {
-//            binding.locationInput.text = "서울특별시 강북구"
-//            binding.locationInput.setTextColor(Color.parseColor("#5666FF"))
-//            popupWindow.dismiss()
-//            isFinish()
-//        }
-//
-//        popupView.findViewById<CardView>(R.id.gangdong_box).setOnClickListener {
-//            binding.locationInput.text = "서울특별시 강동구"
-//            binding.locationInput.setTextColor(Color.parseColor("#5666FF"))
-//            popupWindow.dismiss()
-//            isFinish()
-//        }
-//
-//        popupView.findViewById<CardView>(R.id.gangseo_box).setOnClickListener {
-//            binding.locationInput.text = "서울특별시 강서구"
-//            binding.locationInput.setTextColor(Color.parseColor("#5666FF"))
-//            popupWindow.dismiss()
-//            isFinish()
-//        }
-//
-//        popupView.findViewById<CardView>(R.id.gwanak_box).setOnClickListener {
-//            binding.locationInput.text = "서울특별시 관악구"
-//            binding.locationInput.setTextColor(Color.parseColor("#5666FF"))
-//            popupWindow.dismiss()
-//            isFinish()
-//        }
-//
-//        binding.finishButton.setOnClickListener {
-//            CoroutineScope(Dispatchers.IO).launch {
-//                val db = AppDatabase.getDatabase(this@ProfileActivity)
-//                val user = User(
-//                    getUid(),
-//                    profileImageUrl,
-//                    binding.nicknameInput.text.toString(),
-//                    date,
-//                    sex,
-//                    binding.locationInput.text.toString()
-//                )
-//                db?.userDao()!!.insertUser(user)
-//                withContext(Dispatchers.Main) {
-//                    startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
-//                    finishAffinity()
-//                }
-//            }
-//        }
-    }
-
-    private fun showYearPickerDialog() {
-        val calendar = Calendar.getInstance()
-        val currentYear = calendar.get(Calendar.YEAR)
-
-//        val datePickerDialog = DatePickerDialog(
-//            this,
-//            { _, selectedYear, _, _ ->
-//                date = selectedYear.toString()
-//                binding.ageInput.text = "${selectedYear}년생 (만 ${currentYear - selectedYear}세)"
-//                binding.ageInput.setTextColor(Color.parseColor("#5666FF"))
-//                binding.ageBox.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#5666FF")))
-//            },
-//            currentYear,
-//            0,
-//            1
-//        )
-//
-//        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
-//
-//        datePickerDialog.datePicker.init(currentYear, 0, 1, null)
-//
-//        datePickerDialog.show()
-    }
-
-    private fun isFinish() {
-//        if (
-//            binding.nicknameInput.text.isNotEmpty() && binding.ageInput.text != "태어난 연도를 선택해주세요..."
-//            && binding.locationInput.text != "지역을 선택해주세요..." && profileImageUrl != ""
-//        ) {
-//            binding.finishButton.isEnabled = true
-//            binding.finishButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#5666FF"))
-//        } else {
-//            binding.finishButton.isEnabled = false
-//            binding.finishButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#C4C4C4"))
-//            binding.nicknameBox.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#C4C4C4")))
-//        }
-    }
-
-    private fun uploadImageToFirebaseStorage() {
-        val storageReference = storage.reference.child("profile/${getUid()}.jpg")
-
-        storageReference.putFile(imageUri)
-            .addOnSuccessListener {taskSnapshot ->
-                val downloadUrl = taskSnapshot.metadata?.reference?.downloadUrl
-                if (downloadUrl != null) {
-                    profileImageUrl = downloadUrl.toString()
-
-                    binding.imageView1.visibility = View.GONE
-                    Glide.with(this@ProfileActivity)
-                        .load(imageUri)
-                        .apply(RequestOptions
-                            .centerCropTransform()
-                        )
-                        .into(binding.imageView2)
+                    binding.locationSpinner2.isEnabled = true
+                    binding.locationSpinner2.adapter = location2Adapter
+                    binding.locationSpinner2.setSelection(location2Adapter.count)
                 }
             }
-            .addOnFailureListener { _ ->
-                Toast.makeText(this@ProfileActivity, "이미지 업로드를 실패하였습니다", Toast.LENGTH_SHORT).show()
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
             }
+        }
+
+        binding.locationSpinner2.isEnabled = false
+        binding.locationSpinner2.adapter = location2Adapter
+        binding.locationSpinner2.setSelection(location2Adapter.count)
+
+        binding.locationSpinner2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                if (position != location2Adapter.count) {
+                    val selectedItem = parent.getItemAtPosition(position).toString()
+                    location2 = selectedItem
+
+                    binding.locationSpinner2.setBackgroundResource(R.drawable.dropdown_selected_background)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+            }
+        }
+
+        val alcoholAdapter = DropDownAdapter<String>(this@ProfileActivity)
+        alcoholAdapter.setDropDownViewResource(R.layout.spinner_item)
+        alcoholAdapter.submitList(alcoholList)
+
+        binding.alcoholSpinner.adapter = alcoholAdapter
+        binding.alcoholSpinner.setSelection(alcoholAdapter.count)
+
+        binding.alcoholSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                if (position != alcoholAdapter.count) {
+                    binding.alcoholSpinner.setBackgroundResource(R.drawable.dropdown_selected_background)
+                }
+                when (position) {
+                    0 -> {
+                        alcohol = 0.0
+                    }
+                    1 -> {
+                        alcohol = 0.5
+                    }
+                    2 -> {
+                        alcohol = 1.0
+                    }
+                    3 -> {
+                        alcohol = 2.0
+                    }
+                    4 -> {
+                        alcohol = 3.0
+                    }
+                    5 -> {
+                        alcohol = 4.0
+                    }
+                    6 -> {
+                        alcohol = 5.0
+                    }
+                    7 -> {
+                        alcohol = 5.5
+                    }
+                    else -> {
+                        alcohol = 0.0
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+            }
+        }
     }
+
 }

@@ -1,9 +1,14 @@
 package com.woojun.pato.auth
 
+import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import androidx.core.content.ContextCompat
 import com.woojun.pato.R
@@ -57,6 +62,44 @@ class ProfileActivity : AppCompatActivity() {
 
         val statusBarColor = ContextCompat.getColor(this, R.color.primary)
         window.statusBarColor = statusBarColor
+
+        binding.finishButton.isEnabled = false
+
+        binding.nicknameInput.setOnEditorActionListener { _, actionId, keyEvent ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                (keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER)
+            ) {
+                if (isKoreanName(binding.nicknameInput.text.toString())) {
+                    binding.nicknameInput.setTextColor(Color.parseColor("#23BB75"))
+                    binding.nicknameBox.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#23BB75")))
+                } else {
+                    binding.nicknameInput.setTextColor(Color.parseColor("#B10000"))
+                    binding.nicknameBox.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#B10000")))
+                }
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.nicknameInput.windowToken, 0)
+                return@setOnEditorActionListener true
+            }
+            false
+        }
+
+        binding.hobbyInput.setOnEditorActionListener { _, actionId, keyEvent ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                (keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER)
+            ) {
+                if (binding.hobbyInput.text.isNotEmpty()) {
+                    binding.hobbyInput.setTextColor(Color.parseColor("#23BB75"))
+                    binding.hobbyBox.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#23BB75")))
+                } else {
+                    binding.hobbyInput.setTextColor(Color.parseColor("#B10000"))
+                    binding.hobbyBox.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#B10000")))
+                }
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.hobbyInput.windowToken, 0)
+                return@setOnEditorActionListener true
+            }
+            false
+        }
 
         val location1Adapter = DropDownAdapter<String>(this@ProfileActivity)
         location1Adapter.setDropDownViewResource(R.layout.spinner_item)
@@ -155,6 +198,11 @@ class ProfileActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    private fun isKoreanName(name: String): Boolean {
+        val regex = Regex("^[가-힣]+$")
+        return regex.matches(name)
     }
 
 }

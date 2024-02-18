@@ -161,7 +161,9 @@
                     android:fontFamily="@font/suit_medium"
                     android:hint="닉네임을 입력해주세요..."
                     android:inputType="text"
-                    android:textColor="@color/primary"
+                    android:imeActionLabel="완료"
+                    android:imeOptions="actionDone"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/G3"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -208,6 +210,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <Spinner
+            style="@style/Widget.My.Spinner"
             android:id="@+id/location_spinner2"
             android:layout_width="115dp"
             android:layout_height="39dp"
@@ -233,9 +236,10 @@
 
 
         <Spinner
+            style="@style/Widget.My.Spinner"
             android:layout_marginTop="5dp"
             android:id="@+id/alcohol_spinner"
-            android:layout_width="109dp"
+            android:layout_width="157dp"
             android:layout_height="39dp"
             android:background="@drawable/dropdown_background"
             app:layout_constraintStart_toStartOf="@+id/textView5"
@@ -283,7 +287,9 @@
                     android:fontFamily="@font/suit_medium"
                     android:hint="취미를 입력해주세요..."
                     android:inputType="text"
-                    android:textColor="@color/primary"
+                    android:imeActionLabel="완료"
+                    android:imeOptions="actionDone"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/G3"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -68,7 +68,7 @@ class ProfileActivity : AppCompatActivity() {
         binding.finishButton.isEnabled = false
         binding.finishButton.setOnClickListener {
             startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
-            finish()
+            finishAffinity()
         }
 
         binding.nicknameInput.setOnEditorActionListener { _, actionId, keyEvent ->

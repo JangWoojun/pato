@@ -1,7 +1,6 @@
 package com.woojun.pato.auth
 
 import android.content.Intent
-import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
@@ -17,5 +16,11 @@ class LoginActivity : AppCompatActivity() {
 
         val statusBarColor = ContextCompat.getColor(this, R.color.primary)
         window.statusBarColor = statusBarColor
+
+        binding.kakaoLoginButton.setOnClickListener {
+            val intent = Intent(this@LoginActivity, ProfileActivity::class.java)
+            intent.putExtra("isEdit", false)
+            startActivity(intent)
+        }
     }
 }

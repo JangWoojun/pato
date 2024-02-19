@@ -42,7 +42,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="3dp"
                 android:fontFamily="@font/suit_bold"
-                android:text="프로필을 완성해보세요!"
+                android:text="프로필을 완성해 보세요!"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:layout_marginBottom="18dp"

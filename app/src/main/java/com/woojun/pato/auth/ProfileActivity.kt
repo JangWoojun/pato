@@ -72,6 +72,8 @@ class ProfileActivity : AppCompatActivity() {
                 if (isKoreanName(binding.nicknameInput.text.toString())) {
                     binding.nicknameInput.setTextColor(Color.parseColor("#23BB75"))
                     binding.nicknameBox.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#23BB75")))
+
+                    isFinish()
                 } else {
                     binding.nicknameInput.setTextColor(Color.parseColor("#B10000"))
                     binding.nicknameBox.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#B10000")))
@@ -124,6 +126,8 @@ class ProfileActivity : AppCompatActivity() {
                     binding.locationSpinner2.isEnabled = true
                     binding.locationSpinner2.adapter = location2Adapter
                     binding.locationSpinner2.setSelection(location2Adapter.count)
+
+                    isFinish()
                 }
             }
 
@@ -143,6 +147,8 @@ class ProfileActivity : AppCompatActivity() {
                     location2 = selectedItem
 
                     binding.locationSpinner2.setBackgroundResource(R.drawable.dropdown_selected_background)
+
+                    isFinish()
                 }
             }
 
@@ -203,6 +209,14 @@ class ProfileActivity : AppCompatActivity() {
     private fun isKoreanName(name: String): Boolean {
         val regex = Regex("^[가-힣]+$")
         return regex.matches(name)
+    }
+
+    private fun isFinish() {
+        if (binding.nicknameInput.text.isNotEmpty() && location1 != "" && location2 != "") {
+            binding.finishButton.isEnabled = true
+
+            binding.finishButton.setCardBackgroundColor(Color.parseColor("#FF5656"))
+        }
     }
 
 }

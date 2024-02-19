@@ -1,6 +1,7 @@
 package com.woojun.pato.auth
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import androidx.core.content.ContextCompat
+import com.woojun.pato.MainActivity
 import com.woojun.pato.R
 import com.woojun.pato.databinding.ActivityProfileBinding
 
@@ -64,6 +66,10 @@ class ProfileActivity : AppCompatActivity() {
         window.statusBarColor = statusBarColor
 
         binding.finishButton.isEnabled = false
+        binding.finishButton.setOnClickListener {
+            startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
+            finish()
+        }
 
         binding.nicknameInput.setOnEditorActionListener { _, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE ||

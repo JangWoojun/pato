@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -9,6 +11,16 @@ android {
     namespace = "com.woojun.pato"
     compileSdk = 34
 
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { localProperties.load(it) }
+    }
+
+    val kakaoNativeKey = localProperties.getProperty("kakaoNativeKey") ?: ""
+    val manifesKakaoNativeKey = localProperties.getProperty("manifesKakaoNativeKey") ?: ""
+    val baseUrl = localProperties.getProperty("baseUrl") ?: ""
+
     defaultConfig {
         applicationId = "com.woojun.pato"
         minSdk = 29
@@ -17,6 +29,15 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "kakaoNativeKey", "\"$kakaoNativeKey\"")
+        resValue("string", "kakaoNativeKey", kakaoNativeKey)
+
+        buildConfigField("String", "manifesKakaoNativeKey", "\"$manifesKakaoNativeKey\"")
+        resValue("string", "manifesKakaoNativeKey", manifesKakaoNativeKey)
+
+        buildConfigField("String", "baseUrl", "\"$baseUrl\"")
+        resValue("string", "baseUrl", baseUrl)
     }
 
     buildTypes {
@@ -37,6 +58,9 @@ android {
     }
     viewBinding {
         enable = true
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 

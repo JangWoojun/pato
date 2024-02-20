@@ -177,6 +177,7 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/G3"
                     android:textSize="14sp"
+                    android:maxLength="15"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -186,6 +187,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/duplicate_check_button"
             app:cardElevation="0dp"
             app:cardCornerRadius="5dp"
             android:layout_marginStart="15dp"
@@ -251,7 +253,7 @@
             style="@style/Widget.My.Spinner"
             android:id="@+id/location_spinner1"
             android:layout_marginTop="5dp"
-            android:layout_width="129dp"
+            android:layout_width="175dp"
             android:layout_height="39dp"
             android:background="@drawable/dropdown_background"
             app:layout_constraintStart_toStartOf="@+id/textView3"

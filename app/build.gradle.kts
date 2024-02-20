@@ -65,4 +65,6 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation("com.airbnb.android:lottie:6.0.1")
+
+    implementation("com.kakao.sdk:v2-user:2.19.0")
 }

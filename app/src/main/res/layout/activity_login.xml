@@ -240,6 +240,7 @@
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
+            app:cardElevation="0dp"
             android:id="@+id/kakao_login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -45,6 +45,30 @@ class HiddenFragment : Fragment() {
             "최수빈(24)",
             "5km 내외"
         ),
+        Hidden(
+            "",
+            "최수빈(24)",
+            "5km 내외"
+        ),
+        Hidden(
+            "",
+            "최수빈(24)",
+            "5km 내외"
+        ),
+        Hidden(
+            "",
+            "최수빈(24)",
+            "5km 내외"
+        ),Hidden(
+            "",
+            "최수빈(24)",
+            "5km 내외"
+        ),
+        Hidden(
+            "",
+            "최수빈(24)",
+            "5km 내외"
+        ),
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +87,7 @@ class HiddenFragment : Fragment() {
         binding.userRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.userRecycler.adapter = HiddenAdapter(list)
 
-        binding.backButton.setOnClickListener {
+        binding.matchingStartButton.setOnClickListener {
             findNavController().navigate(
                 R.id.chatFragment, null,
                 NavOptions.Builder()

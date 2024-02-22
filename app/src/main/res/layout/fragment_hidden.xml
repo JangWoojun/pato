@@ -79,7 +79,7 @@
     </ScrollView>
 
     <androidx.cardview.widget.CardView
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="48dp"
         android:id="@+id/matching_start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

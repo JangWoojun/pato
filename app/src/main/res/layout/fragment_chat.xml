@@ -95,7 +95,7 @@
         <LinearLayout
             android:id="@+id/ready_box"
             android:orientation="vertical"
-            android:layout_marginTop="108dp"
+            android:layout_marginTop="106dp"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,14 +105,14 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:layout_width="212dp"
-                android:layout_height="248dp"
+                android:layout_height="268dp"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/loading" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/matching_start_button"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="40dp"
                 android:layout_width="132dp"
                 android:layout_height="50dp"
                 android:backgroundTint="@color/primary"

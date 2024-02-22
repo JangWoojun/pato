@@ -152,7 +152,7 @@
                 app:lottie_rawRes="@raw/progressbar" />
 
             <TextView
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="62dp"
                 android:text="매칭 중..."
                 android:textSize="17sp"
                 android:textColor="@color/black"

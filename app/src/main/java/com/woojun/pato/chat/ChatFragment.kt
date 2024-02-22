@@ -47,6 +47,11 @@ class ChatFragment : Fragment() {
         binding.hiddenButton.setOnClickListener {
             findNavController().navigate(R.id.hiddenFragment)
         }
+
+        binding.matchingStartButton.setOnClickListener {
+            binding.loadingBox.visibility = View.VISIBLE
+            binding.readyBox.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {

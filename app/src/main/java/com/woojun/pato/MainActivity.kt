@@ -24,33 +24,33 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.storeFragment -> {
                     binding.bottomMenu1Selected.visibility = View.VISIBLE
-                    binding.bottomMenu1.visibility = View.GONE
+                    binding.bottomMenu1.visibility = View.INVISIBLE
 
-                    binding.bottomMenu2Selected.visibility = View.GONE
+                    binding.bottomMenu2Selected.visibility = View.INVISIBLE
                     binding.bottomMenu2.visibility = View.VISIBLE
 
-                    binding.bottomMenu3Selected.visibility = View.GONE
+                    binding.bottomMenu3Selected.visibility = View.INVISIBLE
                     binding.bottomMenu3.visibility = View.VISIBLE
                 }
                 R.id.chatFragment -> {
-                    binding.bottomMenu1Selected.visibility = View.GONE
+                    binding.bottomMenu1Selected.visibility = View.INVISIBLE
                     binding.bottomMenu1.visibility = View.VISIBLE
 
                     binding.bottomMenu2Selected.visibility = View.VISIBLE
-                    binding.bottomMenu2.visibility = View.GONE
+                    binding.bottomMenu2.visibility = View.INVISIBLE
 
-                    binding.bottomMenu3Selected.visibility = View.GONE
+                    binding.bottomMenu3Selected.visibility = View.INVISIBLE
                     binding.bottomMenu3.visibility = View.VISIBLE
                 }
                 R.id.myInfoFragment -> {
-                    binding.bottomMenu1Selected.visibility = View.GONE
+                    binding.bottomMenu1Selected.visibility = View.INVISIBLE
                     binding.bottomMenu1.visibility = View.VISIBLE
 
-                    binding.bottomMenu2Selected.visibility = View.GONE
+                    binding.bottomMenu2Selected.visibility = View.INVISIBLE
                     binding.bottomMenu2.visibility = View.VISIBLE
 
                     binding.bottomMenu3Selected.visibility = View.VISIBLE
-                    binding.bottomMenu3.visibility = View.GONE
+                    binding.bottomMenu3.visibility = View.INVISIBLE
                 }
             }
         }

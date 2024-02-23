@@ -15,10 +15,10 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -43,7 +43,7 @@ import java.io.ByteArrayOutputStream
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
 
-    private val citiesList = listOf(
+    private val citiesList = arrayOf(
         "서울특별시",
         "부산광역시",
         "대구광역시",
@@ -61,10 +61,9 @@ class ProfileActivity : AppCompatActivity() {
         "경상북도",
         "경상남도",
         "제주특별자치도",
-        "시/도"
     )
     private val townMap = mapOf(
-        "서울특별시" to listOf(
+        "서울특별시" to arrayOf(
             "종로구",
             "중구",
             "용산구",
@@ -90,9 +89,8 @@ class ProfileActivity : AppCompatActivity() {
             "강남구",
             "송파구",
             "강동구",
-            "시/군/구"
         ),
-        "부산광역시" to listOf(
+        "부산광역시" to arrayOf(
             "중구",
             "서구",
             "동구",
@@ -109,10 +107,9 @@ class ProfileActivity : AppCompatActivity() {
             "수영구",
             "사상구",
             "기장군",
-            "시/군/구"
         ),
-        "대구광역시" to listOf("중구", "동구", "서구", "남구", "북구", "수성구", "달서구", "달성군", "군위군", "시/군/구"),
-        "인천광역시" to listOf(
+        "대구광역시" to arrayOf("중구", "동구", "서구", "남구", "북구", "수성구", "달서구", "달성군", "군위군"),
+        "인천광역시" to arrayOf(
             "중구",
             "동구",
             "미추홀구",
@@ -123,13 +120,12 @@ class ProfileActivity : AppCompatActivity() {
             "서구",
             "강화군",
             "옹진군",
-            "시/군/구"
         ),
-        "광주광역시" to listOf("동구", "서구", "남구", "북구", "광산구", "시/군/구"),
-        "대전광역시" to listOf("동구", "중구", "서구", "유성구", "대덕구", "시/군/구"),
-        "울산광역시" to listOf("중구", "남구", "동구", "북구", "울주군", "시/군/구"),
-        "세종특별자치시" to listOf("세종시", "시/군/구"),
-        "경기도" to listOf(
+        "광주광역시" to arrayOf("동구", "서구", "남구", "북구", "광산구"),
+        "대전광역시" to arrayOf("동구", "중구", "서구", "유성구", "대덕구"),
+        "울산광역시" to arrayOf("중구", "남구", "동구", "북구", "울주군"),
+        "세종특별자치시" to arrayOf("세종시"),
+        "경기도" to arrayOf(
             "수원시",
             "용인시",
             "고양시",
@@ -161,9 +157,8 @@ class ProfileActivity : AppCompatActivity() {
             "과천시",
             "가평군",
             "연천군",
-            "시/군/구"
         ),
-        "강원특별자치도" to listOf(
+        "강원특별자치도" to arrayOf(
             "춘천시",
             "원주시",
             "강릉시",
@@ -182,9 +177,8 @@ class ProfileActivity : AppCompatActivity() {
             "인제군",
             "고성군",
             "양양군",
-            "시/군/구"
         ),
-        "충청북도" to listOf(
+        "충청북도" to arrayOf(
             "청주시",
             "충주시",
             "제천시",
@@ -196,9 +190,8 @@ class ProfileActivity : AppCompatActivity() {
             "괴산군",
             "음성군",
             "단양군",
-            "시/군/구"
         ),
-        "충청남도" to listOf(
+        "충청남도" to arrayOf(
             "천안시",
             "공주시",
             "보령시",
@@ -214,9 +207,8 @@ class ProfileActivity : AppCompatActivity() {
             "홍성군",
             "예산군",
             "태안군",
-            "시/군/구"
         ),
-        "전북특별자치도" to listOf(
+        "전북특별자치도" to arrayOf(
             "전주시",
             "군산시",
             "익산시",
@@ -231,9 +223,8 @@ class ProfileActivity : AppCompatActivity() {
             "순창군",
             "고창군",
             "부안군",
-            "시/군/구"
         ),
-        "전라남도" to listOf(
+        "전라남도" to arrayOf(
             "목포시",
             "여수시",
             "순천시",
@@ -256,9 +247,8 @@ class ProfileActivity : AppCompatActivity() {
             "완도군",
             "진도군",
             "신안군",
-            "시/군/구"
         ),
-        "경상북도" to listOf(
+        "경상북도" to arrayOf(
             "포항시",
             "경주시",
             "김천시",
@@ -281,9 +271,8 @@ class ProfileActivity : AppCompatActivity() {
             "봉화군",
             "울진군",
             "울릉군",
-            "시/군/구"
         ),
-        "경상남도" to listOf(
+        "경상남도" to arrayOf(
             "창원시",
             "진주시",
             "통영시",
@@ -302,11 +291,11 @@ class ProfileActivity : AppCompatActivity() {
             "함양군",
             "거창군",
             "합천군",
-            "시/군/구"
         ),
-        "제주특별자치도" to listOf("제주시", "서귀포시", "시/군/구"),
+        "제주특별자치도" to arrayOf("제주시", "서귀포시"),
+        "" to arrayOf("")
     )
-    private val alcoholList = listOf(
+    private val alcoholList = arrayOf(
         "선택 없음",
         "소주 0.5병 이하",
         "소주 1병",
@@ -315,7 +304,6 @@ class ProfileActivity : AppCompatActivity() {
         "소주 4병",
         "소주 5병",
         "소주 5병 이상",
-        "소주 기준"
     )
 
 
@@ -464,6 +452,61 @@ class ProfileActivity : AppCompatActivity() {
 
         }
 
+        binding.locationSpinner1.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("시/도")
+                .setItems(citiesList) { _, index ->
+                    location1 = citiesList[index]
+                    location2 = ""
+
+                    binding.locationSpinner1Text.text = location1
+                    binding.locationSpinner2Text.text = "시/군/구"
+
+                    binding.locationSpinner1.strokeColor = Color.parseColor("#23BB75")
+                    binding.locationSpinner1Text.setTextColor(Color.parseColor("#23BB75"))
+                    binding.locationSpinner1Icon.setColorFilter(Color.parseColor("#23BB75"))
+
+                    binding.locationSpinner2.strokeColor = Color.parseColor("#C4C4C4")
+                    binding.locationSpinner2Text.setTextColor(Color.parseColor("#C4C4C4"))
+                    binding.locationSpinner2Icon.setColorFilter(Color.parseColor("#C4C4C4"))
+
+                    binding.locationSpinner2.isEnabled = true
+                    setLocation2Dialog(location1)
+
+                    isFinish()
+                }
+            builder.show()
+        }
+
+        binding.locationSpinner2.isEnabled = false
+        binding.locationSpinner2.setOnClickListener {
+            setLocation2Dialog(location1)
+        }
+
+        binding.alcoholSpinner.setOnClickListener {
+            val dialog = AlertDialog.Builder(this)
+            dialog.setTitle("소준 기준")
+                .setItems(alcoholList) { _, index ->
+                    alcohol = when (index) {
+                        0 -> 0.0
+                        1 -> 0.5
+                        2 -> 1.0
+                        3 -> 2.0
+                        4 -> 3.0
+                        5 -> 4.0
+                        6 -> 5.0
+                        7 -> 5.5
+                        else -> 0.0
+                    }
+                    binding.alcoholSpinnerText.text = alcoholList[index]
+
+                    binding.alcoholSpinner.strokeColor = Color.parseColor("#23BB75")
+                    binding.alcoholSpinnerText.setTextColor(Color.parseColor("#23BB75"))
+                    binding.alcoholSpinnerIcon.setColorFilter(Color.parseColor("#23BB75"))
+                }
+            dialog.show()
+        }
+
         binding.hobbyInput.setOnEditorActionListener { _, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE ||
                 (keyEvent != null && keyEvent.action == KeyEvent.ACTION_DOWN && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER)
@@ -482,136 +525,23 @@ class ProfileActivity : AppCompatActivity() {
             false
         }
 
-        val location1Adapter = DropDownAdapter<String>(this@ProfileActivity)
-        location1Adapter.setDropDownViewResource(R.layout.spinner_item)
-        location1Adapter.submitList(citiesList)
 
-        val location2Adapter = DropDownAdapter<String>(this@ProfileActivity)
-        location2Adapter.setDropDownViewResource(R.layout.spinner_item)
-        location2Adapter.submitList(townMap["서울특별시"]!!)
+    }
 
-        binding.locationSpinner1.adapter = location1Adapter
-        binding.locationSpinner1.setSelection(location1Adapter.count)
+    private fun setLocation2Dialog(item: String) {
+        val dialog = AlertDialog.Builder(this)
+        dialog.setTitle("시/군/구")
+            .setItems(townMap[item]) { _, index ->
+                location2 = townMap[item]!![index]
+                binding.locationSpinner2Text.text = location2
 
-        binding.locationSpinner1.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (position != location1Adapter.count) {
-                        val selectedItem = parent.getItemAtPosition(position).toString()
-                        location1 = selectedItem
+                binding.locationSpinner2.strokeColor = Color.parseColor("#23BB75")
+                binding.locationSpinner2Text.setTextColor(Color.parseColor("#23BB75"))
+                binding.locationSpinner2Icon.setColorFilter(Color.parseColor("#23BB75"))
 
-                        binding.locationSpinner1.setBackgroundResource(R.drawable.dropdown_selected_background)
-                        location2Adapter.submitList(townMap[selectedItem]!!)
-
-                        location2 = ""
-                        binding.locationSpinner2.setBackgroundResource(R.drawable.dropdown_background)
-
-                        binding.locationSpinner2.isEnabled = true
-                        binding.locationSpinner2.adapter = location2Adapter
-                        binding.locationSpinner2.setSelection(location2Adapter.count)
-
-                        isFinish()
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-
-                }
+                isFinish()
             }
-
-        binding.locationSpinner2.isEnabled = false
-        binding.locationSpinner2.adapter = location2Adapter
-        binding.locationSpinner2.setSelection(location2Adapter.count)
-
-        binding.locationSpinner2.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (position != location2Adapter.count) {
-                        val selectedItem = parent.getItemAtPosition(position).toString()
-                        location2 = selectedItem
-
-                        binding.locationSpinner2.setBackgroundResource(R.drawable.dropdown_selected_background)
-
-                        isFinish()
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-
-                }
-            }
-
-        val alcoholAdapter = DropDownAdapter<String>(this@ProfileActivity)
-        alcoholAdapter.setDropDownViewResource(R.layout.spinner_item)
-        alcoholAdapter.submitList(alcoholList)
-
-        binding.alcoholSpinner.adapter = alcoholAdapter
-        binding.alcoholSpinner.setSelection(alcoholAdapter.count)
-
-        binding.alcoholSpinner.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (position != alcoholAdapter.count) {
-                        binding.alcoholSpinner.setBackgroundResource(R.drawable.dropdown_selected_background)
-                    }
-                    when (position) {
-                        0 -> {
-                            alcohol = 0.0
-                        }
-
-                        1 -> {
-                            alcohol = 0.5
-                        }
-
-                        2 -> {
-                            alcohol = 1.0
-                        }
-
-                        3 -> {
-                            alcohol = 2.0
-                        }
-
-                        4 -> {
-                            alcohol = 3.0
-                        }
-
-                        5 -> {
-                            alcohol = 4.0
-                        }
-
-                        6 -> {
-                            alcohol = 5.0
-                        }
-
-                        7 -> {
-                            alcohol = 5.5
-                        }
-
-                        else -> {
-                            alcohol = 0.0
-                        }
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-
-                }
-            }
+        dialog.show()
     }
 
     private fun setProfileImage(context: Context, image: String) {

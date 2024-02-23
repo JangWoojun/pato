@@ -647,7 +647,7 @@ class ProfileActivity : AppCompatActivity() {
     private fun setProfile(context: Context, nickName: String, region: String, alcohol: Double, hobby: String, image: String) {
         val retrofit = RetrofitClient.getInstance()
         val apiService = retrofit.create(RetrofitAPI::class.java)
-        val call = apiService.setProfile(AppPreferences.token, ProfileRequest(nickName, region, alcohol, hobby))
+        val call = apiService.setProfile("Bearer ${AppPreferences.token}", ProfileRequest(nickName, region, alcohol, hobby))
 
         call.enqueue(object : Callback<CheckResponse> {
             override fun onResponse(call: Call<CheckResponse>, response: Response<CheckResponse>) {

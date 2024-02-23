@@ -26,4 +26,14 @@ interface RetrofitAPI {
     fun duplicateCheck(
         @Body nickname: CheckNicknameRequest,
     ): Call<CheckResponse>
+
+    @POST("profile/save")
+    fun setProfile(
+        @Header("Authorization") authorization: String,
+        @Body nickname: String,
+        @Body region: String,
+        @Body alcohol: Double,
+        @Body hobby: String
+    ): Call<CheckResponse>
+
 }

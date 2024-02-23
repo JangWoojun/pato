@@ -37,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
     private fun kakaoLogin(context: Context) {
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
-                Toast.makeText(context, "카카오 로그인에 실패하셨습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "카카오 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
             } else if (token != null) {
                 kakaoLoginRequest(context, token.accessToken)
             }
@@ -72,11 +72,11 @@ class LoginActivity : AppCompatActivity() {
                     AppPreferences.token = token
                     moveNextActivity(context, token)
                 } else {
-                    Toast.makeText(context, "카카오 로그인에 실패하셨습니다", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "카카오 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onFailure(call: Call<JwtToken>, t: Throwable) {
-                Toast.makeText(context, "카카오 로그인에 실패하셨습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "카카오 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -98,7 +98,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<Profile>, t: Throwable) {
-                Toast.makeText(context, "카카오 로그인에 실패하셨습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "카카오 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
             }
         })
     }

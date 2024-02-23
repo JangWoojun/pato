@@ -4,16 +4,20 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Base64
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.woojun.pato.MainActivity
 import com.woojun.pato.R
@@ -27,6 +31,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
@@ -312,6 +317,16 @@ class ProfileActivity : AppCompatActivity() {
     private var alcohol = 0.0
     private var nickNameCheck = false
 
+    private var image: String = ""
+
+    private val getContent: ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                image = uriToBase64(this@ProfileActivity, it)
+            }
+            isFinish()
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
@@ -330,6 +345,10 @@ class ProfileActivity : AppCompatActivity() {
         val statusBarColor = ContextCompat.getColor(this, R.color.primary)
         window.statusBarColor = statusBarColor
 
+        binding.profileButton.setOnClickListener {
+            getContent.launch("image/*")
+        }
+
         binding.finishButton.isEnabled = false
         binding.finishButton.setOnClickListener {
             setProfile(
@@ -337,7 +356,8 @@ class ProfileActivity : AppCompatActivity() {
                 binding.nicknameInput.text.toString(),
                 "$location1 $location2",
                 alcohol,
-                binding.hobbyInput.text.toString()
+                binding.hobbyInput.text.toString(),
+                image
             )
         }
 
@@ -556,7 +576,40 @@ class ProfileActivity : AppCompatActivity() {
             }
     }
 
-    private fun setProfile(context: Context, nickName: String, region: String, alcohol: Double, hobby: String) {
+    private fun setProfileImage(context: Context, image: String) {
+        val retrofit = RetrofitClient.getInstance()
+        val apiService = retrofit.create(RetrofitAPI::class.java)
+        val call = apiService.setProfileImage(image)
+
+        call.enqueue(object : Callback<CheckResponse> {
+            override fun onResponse(call: Call<CheckResponse>, response: Response<CheckResponse>) {
+                if (response.isSuccessful && response.body()?.status == true) {
+                    moveMainActivity()
+                } else {
+                    Toast.makeText(context, "이미지 설정에 실패하였습니다", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<CheckResponse>, t: Throwable) {
+                Toast.makeText(context, "이미지 설정에 실패하였습니다", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun uriToBase64(context: Context, uri: Uri): String {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val byteArrayOutputStream = ByteArrayOutputStream()
+
+        val buffer = ByteArray(1024)
+        var bytesRead: Int
+        while (inputStream?.read(buffer).also { bytesRead = it ?: -1 } != -1) {
+            byteArrayOutputStream.write(buffer, 0, bytesRead)
+        }
+        inputStream?.close()
+
+        return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
+    }
+
+    private fun setProfile(context: Context, nickName: String, region: String, alcohol: Double, hobby: String, image: String) {
         val retrofit = RetrofitClient.getInstance()
         val apiService = retrofit.create(RetrofitAPI::class.java)
         val call = apiService.setProfile(AppPreferences.token, nickName, region, alcohol, hobby)
@@ -564,7 +617,7 @@ class ProfileActivity : AppCompatActivity() {
         call.enqueue(object : Callback<CheckResponse> {
             override fun onResponse(call: Call<CheckResponse>, response: Response<CheckResponse>) {
                 if (response.isSuccessful && response.body()?.status == true) {
-                    moveMainActivity()
+                    setProfileImage(context, image)
                 } else {
                     Toast.makeText(context, "프로필 설정에 실패하였습니다", Toast.LENGTH_SHORT).show()
                 }
@@ -605,7 +658,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun isFinish() {
-        if (binding.nicknameInput.text.isNotEmpty() && location1 != "" && location2 != "" && nickNameCheck) {
+        if (binding.nicknameInput.text.isNotEmpty() && location1 != "" && location2 != "" && nickNameCheck && image != "") {
             binding.finishButton.isEnabled = true
             binding.finishButton.setCardBackgroundColor(Color.parseColor("#FF5656"))
         } else {

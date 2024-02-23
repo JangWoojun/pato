@@ -13,6 +13,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.woojun.pato.MainActivity
 import com.woojun.pato.R
@@ -23,6 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
@@ -330,8 +332,13 @@ class ProfileActivity : AppCompatActivity() {
 
         binding.finishButton.isEnabled = false
         binding.finishButton.setOnClickListener {
-            startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
-            finishAffinity()
+            setProfile(
+                this@ProfileActivity,
+                binding.nicknameInput.text.toString(),
+                "$location1 $location2",
+                alcohol,
+                binding.hobbyInput.text.toString()
+            )
         }
 
         binding.nicknameInput.setOnEditorActionListener { _, actionId, keyEvent ->
@@ -547,6 +554,31 @@ class ProfileActivity : AppCompatActivity() {
 
                 }
             }
+    }
+
+    private fun setProfile(context: Context, nickName: String, region: String, alcohol: Double, hobby: String) {
+        val retrofit = RetrofitClient.getInstance()
+        val apiService = retrofit.create(RetrofitAPI::class.java)
+        val call = apiService.setProfile(AppPreferences.token, nickName, region, alcohol, hobby)
+
+        call.enqueue(object : Callback<CheckResponse> {
+            override fun onResponse(call: Call<CheckResponse>, response: Response<CheckResponse>) {
+                if (response.isSuccessful && response.body()?.status == true) {
+                    moveMainActivity()
+                } else {
+                    Toast.makeText(context, "프로필 설정에 실패하였습니다", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<CheckResponse>, t: Throwable) {
+                Toast.makeText(context, "프로필 설정에 실패하였습니다", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun moveMainActivity() {
+        AppPreferences.profile = true
+        startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
+        finishAffinity()
     }
 
     private fun isKoreanName(nickName: String): Boolean {

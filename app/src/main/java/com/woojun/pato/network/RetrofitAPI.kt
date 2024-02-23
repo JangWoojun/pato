@@ -36,4 +36,8 @@ interface RetrofitAPI {
         @Body hobby: String
     ): Call<CheckResponse>
 
+    @POST("profile/saveImage")
+    fun setProfileImage(
+        @Body image: String
+    ): Call<CheckResponse>
 }

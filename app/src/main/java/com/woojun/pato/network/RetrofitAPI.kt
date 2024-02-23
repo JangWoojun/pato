@@ -1,7 +1,7 @@
 package com.woojun.pato.network
 
 import com.woojun.pato.auth.CheckNicknameRequest
-import com.woojun.pato.auth.CheckNicknameResponse
+import com.woojun.pato.auth.CheckResponse
 import com.woojun.pato.auth.JwtToken
 import com.woojun.pato.auth.Profile
 import retrofit2.Call
@@ -25,5 +25,5 @@ interface RetrofitAPI {
     @POST("profile/check-nickname")
     fun duplicateCheck(
         @Body nickname: CheckNicknameRequest,
-    ): Call<CheckNicknameResponse>
+    ): Call<CheckResponse>
 }

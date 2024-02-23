@@ -1,5 +1,5 @@
 package com.woojun.pato.auth
 
-data class CheckNicknameResponse(
+data class CheckResponse(
     val status: Boolean = false
 )

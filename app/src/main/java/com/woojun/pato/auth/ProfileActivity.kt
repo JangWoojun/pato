@@ -508,6 +508,9 @@ class ProfileActivity : AppCompatActivity() {
                         binding.locationSpinner1.setBackgroundResource(R.drawable.dropdown_selected_background)
                         location2Adapter.submitList(townMap[selectedItem]!!)
 
+                        location2 = ""
+                        binding.locationSpinner2.setBackgroundResource(R.drawable.dropdown_background)
+
                         binding.locationSpinner2.isEnabled = true
                         binding.locationSpinner2.adapter = location2Adapter
                         binding.locationSpinner2.setSelection(location2Adapter.count)

@@ -4,6 +4,7 @@ import com.woojun.pato.auth.CheckNicknameRequest
 import com.woojun.pato.auth.CheckResponse
 import com.woojun.pato.auth.JwtToken
 import com.woojun.pato.auth.Profile
+import com.woojun.pato.auth.ProfileRequest
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -30,10 +31,7 @@ interface RetrofitAPI {
     @POST("profile/save")
     fun setProfile(
         @Header("Authorization") authorization: String,
-        @Body nickname: String,
-        @Body region: String,
-        @Body alcohol: Double,
-        @Body hobby: String
+        @Body profileRequest: ProfileRequest
     ): Call<CheckResponse>
 
     @POST("profile/saveImage")

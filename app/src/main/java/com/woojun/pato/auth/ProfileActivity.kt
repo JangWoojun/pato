@@ -400,7 +400,9 @@ class ProfileActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.duplicateCheckButton.isEnabled = true
                 nickNameCheck = false
+
                 binding.nicknameInput.setTextColor(Color.parseColor("#000000"))
                 binding.nicknameBox.setStrokeColor(ColorStateList.valueOf(Color.parseColor("#C4C4C4")))
 
@@ -430,6 +432,7 @@ class ProfileActivity : AppCompatActivity() {
                         binding.duplicateCheckText.setTextColor(Color.parseColor("#23BB75"))
                         binding.duplicateCheckText.text = "확인되었습니다."
 
+                        binding.duplicateCheckButton.isEnabled = false
                         nickNameCheck = true
 
                         isFinish()

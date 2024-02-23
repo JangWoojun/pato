@@ -268,27 +268,97 @@
             app:layout_constraintBottom_toBottomOf="@+id/textView3"
             app:layout_constraintStart_toEndOf="@+id/textView3" />
 
-        <Spinner
-            style="@style/Widget.My.Spinner"
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/location_spinner1"
             android:layout_marginTop="5dp"
             android:layout_width="175dp"
             android:layout_height="39dp"
-            android:background="@drawable/dropdown_background"
+            app:cardBackgroundColor="@color/white"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/G3"
+            app:cardCornerRadius="5dp"
             app:layout_constraintStart_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@+id/textView3">
 
-        <Spinner
-            style="@style/Widget.My.Spinner"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:id="@+id/location_spinner1_text"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingVertical="11dp"
+                    android:textColor="@color/G3"
+                    android:textSize="14sp"
+                    android:text="시/도"
+                    android:fontFamily="@font/suit_medium" />
+
+                <ImageView
+                    android:id="@+id/location_spinner1_icon"
+                    android:layout_marginEnd="15dp"
+                    android:layout_width="17dp"
+                    android:layout_height="8dp"
+                    android:src="@drawable/dropdown_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/location_spinner2"
             android:layout_width="115dp"
             android:layout_height="39dp"
             android:layout_marginTop="5dp"
             android:layout_marginStart="20dp"
-            android:background="@drawable/dropdown_background"
+            app:cardBackgroundColor="@color/white"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/G3"
+            app:cardCornerRadius="5dp"
             app:layout_constraintStart_toEndOf="@+id/location_spinner1"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@+id/textView3">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/location_spinner2_text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingVertical="11dp"
+                    android:textColor="@color/G3"
+                    android:textSize="14sp"
+                    android:text="시/군/구"
+                    android:fontFamily="@font/suit_medium" />
+
+                <ImageView
+                    android:id="@+id/location_spinner2_icon"
+                    android:layout_marginEnd="15dp"
+                    android:layout_width="17dp"
+                    android:layout_height="8dp"
+                    android:src="@drawable/dropdown_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:layout_marginTop="27dp"
@@ -304,15 +374,50 @@
             app:layout_constraintTop_toBottomOf="@+id/location_spinner1" />
 
 
-        <Spinner
-            style="@style/Widget.My.Spinner"
+        <com.google.android.material.card.MaterialCardView
             android:layout_marginTop="5dp"
             android:id="@+id/alcohol_spinner"
             android:layout_width="157dp"
             android:layout_height="39dp"
-            android:background="@drawable/dropdown_background"
+            app:cardBackgroundColor="@color/white"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/G3"
+            app:cardCornerRadius="5dp"
             app:layout_constraintStart_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintTop_toBottomOf="@+id/textView5" >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/alcohol_spinner_text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:paddingVertical="11dp"
+                    android:textColor="@color/G3"
+                    android:textSize="14sp"
+                    android:text="소주 기준"
+                    android:fontFamily="@font/suit_medium" />
+
+                <ImageView
+                    android:id="@+id/alcohol_spinner_icon"
+                    android:layout_marginEnd="15dp"
+                    android:layout_width="17dp"
+                    android:layout_height="8dp"
+                    android:src="@drawable/dropdown_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
 
         <TextView

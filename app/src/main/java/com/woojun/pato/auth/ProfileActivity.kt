@@ -569,6 +569,11 @@ class ProfileActivity : AppCompatActivity() {
 
     }
 
+    private fun isImageUrl(str: String): Boolean {
+        val urlPattern = "^(http[s]?://.*\\.(?:png|jpg|gif|jpeg))$".toRegex(RegexOption.IGNORE_CASE)
+        return str.matches(urlPattern)
+    }
+
     private fun setLocation2Dialog(item: String) {
         val dialog = AlertDialog.Builder(this)
         dialog.setTitle("시/군/구")
@@ -628,7 +633,11 @@ class ProfileActivity : AppCompatActivity() {
         call.enqueue(object : Callback<CheckResponse> {
             override fun onResponse(call: Call<CheckResponse>, response: Response<CheckResponse>) {
                 if (response.isSuccessful && response.body()?.status == true) {
-                    setProfileImage(context, header, image)
+                    if (isImageUrl(image)) {
+                        moveMainActivity()
+                    } else {
+                        setProfileImage(context, header, image)
+                    }
                 } else {
                     Toast.makeText(context, "프로필 설정에 실패하였습니다", Toast.LENGTH_SHORT).show()
                 }

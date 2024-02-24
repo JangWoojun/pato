@@ -59,18 +59,45 @@ class MainActivity : AppCompatActivity() {
                 NavOptions.Builder()
                     .setPopUpTo(R.id.chatFragment, false)
                     .build())
+
+            binding.store.isEnabled = false
+            binding.bottomMenu1Selected.isEnabled = false
+
+            binding.chat.isEnabled = true
+            binding.bottomMenu2Selected.isEnabled = true
+
+            binding.myInfo.isEnabled = true
+            binding.bottomMenu3Selected.isEnabled = true
         }
         binding.chat.setOnClickListener {
             navController.navigate(R.id.chatFragment, null,
                 NavOptions.Builder()
                     .setPopUpTo(R.id.bottom_navigation_graph, false)
                     .build())
+
+            binding.store.isEnabled = true
+            binding.bottomMenu1Selected.isEnabled = true
+
+            binding.chat.isEnabled = false
+            binding.bottomMenu2Selected.isEnabled = false
+
+            binding.myInfo.isEnabled = true
+            binding.bottomMenu3Selected.isEnabled = true
         }
         binding.myInfo.setOnClickListener {
             navController.navigate(R.id.myInfoFragment, null,
                 NavOptions.Builder()
                     .setPopUpTo(R.id.chatFragment, false)
                     .build())
+
+            binding.store.isEnabled = true
+            binding.bottomMenu1Selected.isEnabled = true
+
+            binding.chat.isEnabled = true
+            binding.bottomMenu2Selected.isEnabled = true
+
+            binding.myInfo.isEnabled = false
+            binding.bottomMenu3Selected.isEnabled = false
         }
 
     }

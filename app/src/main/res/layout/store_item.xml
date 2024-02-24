@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:id="@+id/store_item"
-    android:layout_marginHorizontal="3.5dp"
     android:layout_marginBottom="30dp"
     android:layout_width="112dp"
     android:layout_height="163dp">

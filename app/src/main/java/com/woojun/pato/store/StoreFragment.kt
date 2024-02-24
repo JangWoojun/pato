@@ -1,11 +1,13 @@
 package com.woojun.pato.store
 
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import com.woojun.pato.EdgeItemDecoration
 import com.woojun.pato.databinding.FragmentStoreBinding
 
 class StoreFragment : Fragment() {
@@ -85,11 +87,16 @@ class StoreFragment : Fragment() {
 
         binding.storeRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
         binding.storeRecycler.adapter = StoreAdapter(list)
+        binding.storeRecycler.addItemDecoration(EdgeItemDecoration(3, 7f.fromDpToPx()))
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun Float.fromDpToPx(): Int =
+        (this * Resources.getSystem().displayMetrics.density).toInt()
 
 }

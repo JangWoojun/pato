@@ -1,5 +1,6 @@
 package com.woojun.pato.chat
 
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.woojun.pato.EdgeItemDecoration
 import com.woojun.pato.R
 import com.woojun.pato.databinding.FragmentHiddenBinding
 
@@ -87,6 +89,8 @@ class HiddenFragment : Fragment() {
         binding.userRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.userRecycler.adapter = HiddenAdapter(list)
 
+        binding.userRecycler.addItemDecoration(EdgeItemDecoration(2, 14f.fromDpToPx()))
+
         binding.matchingStartButton.setOnClickListener {
             findNavController().navigate(
                 R.id.chatFragment, null,
@@ -102,5 +106,8 @@ class HiddenFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun Float.fromDpToPx(): Int =
+        (this * Resources.getSystem().displayMetrics.density).toInt()
 
 }

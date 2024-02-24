@@ -36,6 +36,7 @@ interface RetrofitAPI {
 
     @POST("profile/saveImage")
     fun setProfileImage(
+        @Header("Authorization") authorization: String,
         @Body image: String
     ): Call<CheckResponse>
 }

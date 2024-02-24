@@ -90,6 +90,7 @@ class LoginActivity : AppCompatActivity() {
         call.enqueue(object : Callback<Profile> {
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                 if (response.isSuccessful) {
+                    AppPreferences.profile = true
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 } else {
                     val intent = Intent(this@LoginActivity, ProfileActivity::class.java)

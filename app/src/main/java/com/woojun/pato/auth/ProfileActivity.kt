@@ -374,8 +374,9 @@ class ProfileActivity : AppCompatActivity() {
 
         binding.finishButton.isEnabled = false
         binding.finishButton.setOnClickListener {
-            setProfile(
+            setProfileImage(
                 this@ProfileActivity,
+                "Bearer ${AppPreferences.token}",
                 binding.nicknameInput.text.toString(),
                 "$location1 $location2",
                 alcohol,
@@ -547,15 +548,15 @@ class ProfileActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun setProfileImage(context: Context, image: String) {
+    private fun setProfileImage(context: Context, header: String, nickName: String, region: String, alcohol: Double, hobby: String, image: String) {
         val retrofit = RetrofitClient.getInstance()
         val apiService = retrofit.create(RetrofitAPI::class.java)
-        val call = apiService.setProfileImage(image)
+        val call = apiService.setProfileImage(header, image)
 
         call.enqueue(object : Callback<CheckResponse> {
             override fun onResponse(call: Call<CheckResponse>, response: Response<CheckResponse>) {
                 if (response.isSuccessful && response.body()?.status == true) {
-                    moveMainActivity()
+                    setProfile(context, header, nickName, region, alcohol, hobby)
                 } else {
                     Toast.makeText(context, "이미지 설정에 실패하였습니다", Toast.LENGTH_SHORT).show()
                 }
@@ -580,15 +581,22 @@ class ProfileActivity : AppCompatActivity() {
         return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
     }
 
-    private fun setProfile(context: Context, nickName: String, region: String, alcohol: Double, hobby: String, image: String) {
+    private fun setProfile(
+        context: Context,
+        header: String,
+        nickName: String,
+        region: String,
+        alcohol: Double,
+        hobby: String
+    ) {
         val retrofit = RetrofitClient.getInstance()
         val apiService = retrofit.create(RetrofitAPI::class.java)
-        val call = apiService.setProfile("Bearer ${AppPreferences.token}", ProfileRequest(nickName, region, alcohol, hobby))
+        val call = apiService.setProfile(header, ProfileRequest(nickName, region, alcohol, hobby))
 
         call.enqueue(object : Callback<CheckResponse> {
             override fun onResponse(call: Call<CheckResponse>, response: Response<CheckResponse>) {
                 if (response.isSuccessful && response.body()?.status == true) {
-                    setProfileImage(context, image)
+                    moveMainActivity()
                 } else {
                     Toast.makeText(context, "프로필 설정에 실패하였습니다", Toast.LENGTH_SHORT).show()
                 }

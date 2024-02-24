@@ -24,6 +24,9 @@ class MyInfoFragment : Fragment() {
 
     private var _binding: FragmentMyInfoBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var profile: Profile
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -42,8 +45,10 @@ class MyInfoFragment : Fragment() {
         getProfile(requireContext(), AppPreferences.token)
 
         binding.editButton.setOnClickListener {
-            val intent = Intent(requireContext(), ProfileActivity::class.java)
-            intent.putExtra("isEdit", true)
+            val intent = Intent(requireContext(), ProfileActivity::class.java).apply {
+                putExtra("isEdit", true)
+                putExtra("profile", profile)
+            }
             startActivity(intent)
         }
 
@@ -63,6 +68,7 @@ class MyInfoFragment : Fragment() {
         call.enqueue(object : Callback<Profile> {
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
                 if (response.isSuccessful) {
+                    profile = response.body()!!
                     bindingProfile(response.body()!!)
                 } else {
                     Toast.makeText(context, "프로필 불러오기를 실패였습니다", Toast.LENGTH_SHORT).show()

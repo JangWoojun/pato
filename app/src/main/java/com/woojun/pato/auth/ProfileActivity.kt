@@ -6,6 +6,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -306,7 +307,6 @@ class ProfileActivity : AppCompatActivity() {
         "소주 5병 이상",
     )
 
-
     private var location1 = ""
     private var location2 = ""
     private var alcohol = 0.0
@@ -359,10 +359,48 @@ class ProfileActivity : AppCompatActivity() {
         if (isEdit) {
             binding.editText1.visibility = View.VISIBLE
             binding.editText2.visibility = View.VISIBLE
+
+            val profile = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableExtra("profile", Profile::class.java)!!
+            } else {
+                intent.getParcelableExtra("profile")!!
+            }
+
+            location1 = profile.region.split(" ")[0]
+            location2 = profile.region.split(" ")[1]
+            alcohol = profile.alcohol
+            image = profile.image
+
+            nickNameCheck = true
+            binding.finishButton.isEnabled = true
+
+            binding.nicknameInput.setText(profile.nickname)
+            binding.locationSpinner1Text.text = profile.region.split(" ")[0]
+            binding.locationSpinner2Text.text = profile.region.split(" ")[1]
+            binding.alcoholSpinnerText.text = when(profile.alcohol) {
+                0.0 -> "선택 없음"
+                0.5 -> "소주 0.5병 이하"
+                1.0 -> "소주 1병"
+                2.0 -> "소주 2병"
+                3.0 -> "소주 3병"
+                4.0 -> "소주 4병"
+                5.0 -> "소주 5병"
+                5.5 -> "소주 5병 이상"
+                else -> "선택 없음"
+            }
+            binding.hobbyInput.setText(profile.hobby)
+            binding.defaultProfileImage.visibility = View.INVISIBLE
+            Glide.with(this)
+                .load(profile.image)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(binding.profileImage)
+            isFinish()
         } else {
             binding.signUpText1.visibility = View.VISIBLE
             binding.signUpText2.visibility = View.VISIBLE
             binding.signUpText3.visibility = View.VISIBLE
+            binding.finishButton.isEnabled = false
         }
 
         val statusBarColor = ContextCompat.getColor(this, R.color.primary)
@@ -372,7 +410,6 @@ class ProfileActivity : AppCompatActivity() {
             getContent.launch("image/*")
         }
 
-        binding.finishButton.isEnabled = false
         binding.finishButton.setOnClickListener {
             setProfile(
                 this@ProfileActivity,

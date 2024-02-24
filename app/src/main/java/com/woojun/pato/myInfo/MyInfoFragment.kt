@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.woojun.pato.auth.AppPreferences
 import com.woojun.pato.auth.Profile
 import com.woojun.pato.auth.ProfileActivity
@@ -73,6 +75,11 @@ class MyInfoFragment : Fragment() {
     }
 
     private fun bindingProfile(profile: Profile)  {
+        Glide.with(requireContext())
+            .load(profile.image)
+            .centerCrop()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(binding.imageView)
         binding.nicknameText.text = profile.nickname
         binding.locationText.text = profile.region
         binding.drinkingCapacityText.text = when(profile.alcohol) {
@@ -86,7 +93,11 @@ class MyInfoFragment : Fragment() {
             5.5 -> "소주 5병 이상"
             else -> "선택 없음"
         }
-        binding.hobbyText.text = profile.hobby
+        if (profile.hobby == "") {
+            binding.hobbyText.text = "미 입력"
+        } else {
+            binding.hobbyText.text = profile.hobby
+        }
     }
 
 }

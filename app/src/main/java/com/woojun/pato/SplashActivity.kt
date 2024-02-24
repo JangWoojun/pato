@@ -22,7 +22,7 @@ class SplashActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             if (AppPreferences.profile && AppPreferences.token != "") {
                 startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-            } else if (!AppPreferences.profile) {
+            } else if (AppPreferences.token != "") {
                 startActivity(Intent(this@SplashActivity, ProfileActivity::class.java))
             } else {
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))

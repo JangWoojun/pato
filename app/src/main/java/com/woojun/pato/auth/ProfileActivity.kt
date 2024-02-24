@@ -374,7 +374,7 @@ class ProfileActivity : AppCompatActivity() {
 
         binding.finishButton.isEnabled = false
         binding.finishButton.setOnClickListener {
-            setProfileImage(
+            setProfile(
                 this@ProfileActivity,
                 "Bearer ${AppPreferences.token}",
                 binding.nicknameInput.text.toString(),
@@ -548,15 +548,15 @@ class ProfileActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun setProfileImage(context: Context, header: String, nickName: String, region: String, alcohol: Double, hobby: String, image: String) {
+    private fun setProfileImage(context: Context, header: String, image: String) {
         val retrofit = RetrofitClient.getInstance()
         val apiService = retrofit.create(RetrofitAPI::class.java)
-        val call = apiService.setProfileImage(header, image)
+        val call = apiService.setProfileImage(header, ProfileImageRequest(image))
 
         call.enqueue(object : Callback<CheckResponse> {
             override fun onResponse(call: Call<CheckResponse>, response: Response<CheckResponse>) {
                 if (response.isSuccessful && response.body()?.status == true) {
-                    setProfile(context, header, nickName, region, alcohol, hobby)
+                    moveMainActivity()
                 } else {
                     Toast.makeText(context, "이미지 설정에 실패하였습니다", Toast.LENGTH_SHORT).show()
                 }
@@ -582,12 +582,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setProfile(
-        context: Context,
-        header: String,
-        nickName: String,
-        region: String,
-        alcohol: Double,
-        hobby: String
+        context: Context, header: String, nickName: String, region: String, alcohol: Double, hobby: String, image: String
     ) {
         val retrofit = RetrofitClient.getInstance()
         val apiService = retrofit.create(RetrofitAPI::class.java)
@@ -596,7 +591,7 @@ class ProfileActivity : AppCompatActivity() {
         call.enqueue(object : Callback<CheckResponse> {
             override fun onResponse(call: Call<CheckResponse>, response: Response<CheckResponse>) {
                 if (response.isSuccessful && response.body()?.status == true) {
-                    moveMainActivity()
+                    setProfileImage(context, header, image)
                 } else {
                     Toast.makeText(context, "프로필 설정에 실패하였습니다", Toast.LENGTH_SHORT).show()
                 }

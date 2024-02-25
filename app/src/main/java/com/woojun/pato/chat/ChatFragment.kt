@@ -51,6 +51,7 @@ class ChatFragment : Fragment() {
         binding.matchingStartButton.setOnClickListener {
             binding.loadingBox.visibility = View.VISIBLE
             binding.readyBox.visibility = View.INVISIBLE
+            binding.setHiddenButton.visibility = View.INVISIBLE
         }
 
         binding.setHiddenButton.setOnClickListener {

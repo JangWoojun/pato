@@ -20,6 +20,7 @@ android {
     val kakaoNativeKey = localProperties.getProperty("kakaoNativeKey") ?: ""
     val manifesKakaoNativeKey = localProperties.getProperty("manifesKakaoNativeKey") ?: ""
     val baseUrl = localProperties.getProperty("baseUrl") ?: ""
+    val testCode = localProperties.getProperty("testCode") ?: ""
 
     defaultConfig {
         applicationId = "com.woojun.pato"
@@ -38,6 +39,9 @@ android {
 
         buildConfigField("String", "baseUrl", "\"$baseUrl\"")
         resValue("string", "baseUrl", baseUrl)
+
+        buildConfigField("String", "testCode", "\"$testCode\"")
+        resValue("string", "testCode", testCode)
     }
 
     buildTypes {

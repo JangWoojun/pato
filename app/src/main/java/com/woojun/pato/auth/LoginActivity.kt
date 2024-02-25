@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -39,13 +41,47 @@ class LoginActivity : AppCompatActivity() {
             testLoginCheck+=1
             if (testLoginCheck > 4) {
                 Toast.makeText(this@LoginActivity, "테스트 로그인을 사용합니다", Toast.LENGTH_SHORT).show()
-                testLogin()
+                showDialog()
             }
         }
     }
 
-    private fun testLogin() {
-        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+    private fun showDialog() {
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.test_login_dialog, null)
+
+        val testCodeInput = dialogView.findViewById<EditText>(R.id.editTextDialogUserInput)
+
+        AlertDialog.Builder(this)
+            .setTitle("테스트 로그인")
+            .setView(dialogView)
+            .setPositiveButton("확인") { _, _ ->
+                val testCode = testCodeInput.text.toString()
+                testLogin(this@LoginActivity, testCode)
+            }
+            .setNegativeButton("취소", null)
+            .create().show()
+    }
+
+    private fun testLogin(context: Context, code: String) {
+        val retrofit = RetrofitClient.getInstance()
+        val apiService = retrofit.create(RetrofitAPI::class.java)
+        val call = apiService.kakaoLogin(code)
+
+        call.enqueue(object : Callback<JwtToken> {
+            override fun onResponse(call: Call<JwtToken>, response: Response<JwtToken>) {
+                if (response.isSuccessful) {
+                    val token = response.body()!!.token
+                    AppPreferences.token = token
+                    moveNextActivity(context, token)
+                } else {
+                    Toast.makeText(context, "테스트 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<JwtToken>, t: Throwable) {
+                Toast.makeText(context, "테스트 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun kakaoLogin(context: Context) {
@@ -113,7 +149,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
             override fun onFailure(call: Call<Profile>, t: Throwable) {
-                Toast.makeText(context, "카카오 로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "로그인에 실패하였습니다", Toast.LENGTH_SHORT).show()
             }
         })
     }

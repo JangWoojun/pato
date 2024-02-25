@@ -50,7 +50,12 @@ class ChatFragment : Fragment() {
 
         binding.matchingStartButton.setOnClickListener {
             binding.loadingBox.visibility = View.VISIBLE
-            binding.readyBox.visibility = View.GONE
+            binding.readyBox.visibility = View.INVISIBLE
+        }
+
+        binding.setHiddenButton.setOnClickListener {
+            binding.readyBox.visibility = View.INVISIBLE
+            binding.hiddenGuideText.visibility = View.VISIBLE
         }
     }
 

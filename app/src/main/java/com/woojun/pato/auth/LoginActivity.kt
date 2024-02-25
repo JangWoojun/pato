@@ -71,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
     private fun testLogin(context: Context, code: String) {
         val retrofit = RetrofitClient.getInstance()
         val apiService = retrofit.create(RetrofitAPI::class.java)
-        val call = apiService.kakaoLogin(code)
+        val call = apiService.testLogin(code)
 
         call.enqueue(object : Callback<JwtToken> {
             override fun onResponse(call: Call<JwtToken>, response: Response<JwtToken>) {

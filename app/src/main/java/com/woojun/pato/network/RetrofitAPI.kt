@@ -19,6 +19,11 @@ interface RetrofitAPI {
         @Query("code") code: String,
     ): Call<JwtToken>
 
+    @GET("auth/test/login")
+    fun testLogin(
+        @Query("code") code: String,
+    ): Call<JwtToken>
+
     @GET("profile/get")
     fun getProfile(
         @Header("Authorization") authorization: String,

@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
 
         val testCodeInput = dialogView.findViewById<EditText>(R.id.editTextDialogUserInput)
 
-        AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this)
             .setTitle("테스트 로그인")
             .setView(dialogView)
             .setPositiveButton("확인") { _, _ ->
@@ -60,7 +60,12 @@ class LoginActivity : AppCompatActivity() {
                 testLogin(this@LoginActivity, testCode)
             }
             .setNegativeButton("취소", null)
-            .create().show()
+            .create()
+
+        dialog.show()
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.primary))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.primary))
     }
 
     private fun testLogin(context: Context, code: String) {

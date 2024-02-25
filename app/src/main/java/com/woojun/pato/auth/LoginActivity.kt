@@ -21,6 +21,8 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
+    private var testLoginCheck = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -32,6 +34,18 @@ class LoginActivity : AppCompatActivity() {
         binding.kakaoLoginButton.setOnClickListener {
             kakaoLogin(this@LoginActivity)
         }
+
+        binding.testLoginButton.setOnClickListener {
+            testLoginCheck+=1
+            if (testLoginCheck > 4) {
+                Toast.makeText(this@LoginActivity, "테스트 로그인을 사용합니다", Toast.LENGTH_SHORT).show()
+                testLogin()
+            }
+        }
+    }
+
+    private fun testLogin() {
+        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
     }
 
     private fun kakaoLogin(context: Context) {

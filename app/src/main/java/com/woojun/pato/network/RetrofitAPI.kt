@@ -6,6 +6,7 @@ import com.woojun.pato.auth.JwtToken
 import com.woojun.pato.auth.Profile
 import com.woojun.pato.auth.ProfileImageRequest
 import com.woojun.pato.auth.ProfileRequest
+import com.woojun.pato.chat.Matching
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -45,4 +46,10 @@ interface RetrofitAPI {
         @Header("Authorization") authorization: String,
         @Body image: ProfileImageRequest
     ): Call<CheckResponse>
+
+    @GET("matching/start")
+    fun matchingStart(
+        @Header("Authorization") authorization: String,
+    ): Call<Matching>
+
 }

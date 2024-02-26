@@ -92,10 +92,10 @@ class ChatFragment : Fragment() {
             startActivity(Intent(requireContext(), ChattingActivity::class.java))
 
             client.dispatcher.executorService.shutdown()
+            webSocket?.close(1000, "매칭 완료")
         }
 
         webSocket = client.newWebSocket(request, listener)
-        webSocket?.close(1000, "매칭 완료")
     }
 
     private fun matchingStart(header: String) {

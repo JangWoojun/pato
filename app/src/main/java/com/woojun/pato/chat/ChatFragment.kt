@@ -107,7 +107,7 @@ class ChatFragment : Fragment() {
             override fun onResponse(call: Call<Matching>, response: Response<Matching>) {
                 if (response.isSuccessful && response.body()!!.status == "matched") {
                     startActivity(Intent(requireContext(), ChattingActivity::class.java))
-                } else if (response.body()!!.status == "waiting") {
+                } else if (response.isSuccessful && response.body()!!.status == "waiting") {
                     binding.loadingBox.visibility = View.VISIBLE
                     binding.readyBox.visibility = View.INVISIBLE
                     binding.setHiddenButton.visibility = View.INVISIBLE

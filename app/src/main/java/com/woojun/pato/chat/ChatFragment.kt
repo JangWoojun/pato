@@ -9,11 +9,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.woojun.pato.BuildConfig
 import com.woojun.pato.R
 import com.woojun.pato.auth.AppPreferences
 import com.woojun.pato.databinding.FragmentChatBinding
 import com.woojun.pato.network.RetrofitAPI
 import com.woojun.pato.network.RetrofitClient
+import com.woojun.pato.network.WaitingWebSocketListener
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.WebSocket
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,6 +39,7 @@ class ChatFragment : Fragment() {
         UserInfo("", "라윤지", "오후 5:54", "안녕하세요! 새로운 컨셉 문의를 위해 연락 드립니다"),
         UserInfo("", "라윤지", "오후 5:54", "안녕하세요! 새로운 컨셉 문의를 위해 연락 드립니다"),
     )
+    private var webSocket: WebSocket? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,10 +75,27 @@ class ChatFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        webSocket?.close(1000, "액티비티 종료")
     }
 
     private fun matchingWaiting() {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("${BuildConfig.baseUrl}matching/waiting")
+            .header("Authorization", "Bearer ${AppPreferences.token}")
+            .build()
 
+        val listener = WaitingWebSocketListener(requireContext()) {
+            binding.loadingBox.visibility = View.INVISIBLE
+            binding.readyBox.visibility = View.VISIBLE
+            binding.setHiddenButton.visibility = View.VISIBLE
+            startActivity(Intent(requireContext(), ChattingActivity::class.java))
+
+            client.dispatcher.executorService.shutdown()
+        }
+
+        webSocket = client.newWebSocket(request, listener)
+        webSocket?.close(1000, "매칭 완료")
     }
 
     private fun matchingStart(header: String) {

@@ -82,4 +82,6 @@ dependencies {
     implementation("com.airbnb.android:lottie:6.0.1")
 
     implementation("com.kakao.sdk:v2-user:2.19.0")
+
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 }

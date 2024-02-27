@@ -2,6 +2,7 @@ package com.woojun.pato.chat
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,16 +10,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.woojun.pato.BuildConfig
 import com.woojun.pato.R
 import com.woojun.pato.auth.AppPreferences
 import com.woojun.pato.databinding.FragmentChatBinding
 import com.woojun.pato.network.RetrofitAPI
 import com.woojun.pato.network.RetrofitClient
-import com.woojun.pato.network.WaitingWebSocketListener
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
+import okhttp3.WebSocketListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -75,7 +77,7 @@ class ChatFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        webSocket?.close(1000, "액티비티 종료")
+        webSocket?.close(1000, null)
     }
 
     private fun matchingWaiting() {
@@ -85,14 +87,33 @@ class ChatFragment : Fragment() {
             .header("Authorization", "Bearer ${AppPreferences.token}")
             .build()
 
-        val listener = WaitingWebSocketListener(requireContext()) {
-            binding.loadingBox.visibility = View.INVISIBLE
-            binding.readyBox.visibility = View.VISIBLE
-            binding.setHiddenButton.visibility = View.VISIBLE
-            startActivity(Intent(requireContext(), ChattingActivity::class.java))
+        val gson = Gson()
 
-            client.dispatcher.executorService.shutdown()
-            webSocket?.close(1000, "매칭 완료")
+        val listener = object : WebSocketListener() {
+            override fun onMessage(webSocket: WebSocket, text: String) {
+                val message = gson.fromJson(text, MatchingWaiting::class.java)
+                Log.d("확인", message.toString())
+                if (message.status) {
+                    activity?.runOnUiThread {
+                        binding.loadingBox.visibility = View.INVISIBLE
+                        binding.readyBox.visibility = View.VISIBLE
+                        binding.setHiddenButton.visibility = View.VISIBLE
+                        Log.d("확인", "이동")
+                        startActivity(Intent(requireContext(), ChattingActivity::class.java))
+                    }
+                }
+            }
+
+            override fun onOpen(webSocket: WebSocket, response: okhttp3.Response) {
+                super.onOpen(webSocket, response)
+                Log.d("확인", "시작")
+            }
+
+            override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+                super.onClosing(webSocket, code, reason)
+                webSocket.close(1000, null)
+                Log.d("확인", "닫힘")
+            }
         }
 
         webSocket = client.newWebSocket(request, listener)

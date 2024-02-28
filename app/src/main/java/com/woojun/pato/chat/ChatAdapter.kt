@@ -58,21 +58,39 @@ class ChatAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter
         return chatList.size
     }
 
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        if (holder is ChatViewHolder) {
+            holder.init()
+        } else if (holder is OtherChatViewHolder) {
+            holder.init()
+        }
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (chatList[position].isUser) {
-            (holder as ChatViewHolder).bind(chatList[position])
+        val chatItem = chatList[position]
+        if (chatItem.isUser) {
+            (holder as ChatViewHolder).bind(chatItem)
         } else {
-            if (chatList.filter { !it.isUser }.size == 1) {
-                (holder as OtherChatViewHolder).bind(chatList[position], true)
+            val firstNonUserIndex = chatList.indexOfFirst { !it.isUser }
+            if (position == firstNonUserIndex) {
+                (holder as OtherChatViewHolder).bind(chatItem, true)
             } else {
-                val isFirst = chatList[position].date.last() != chatList[position - 1].date.last()
-                (holder as OtherChatViewHolder).bind(chatList[position], isFirst)
+                val isFirst = chatItem.date.last() != chatList[position - 1].date.last()
+                (holder as OtherChatViewHolder).bind(chatItem, isFirst)
             }
         }
     }
 
     class ChatViewHolder(private val binding: ChatItemBinding):
         ViewHolder(binding.root) {
+
+        fun init() {
+            binding.apply {
+                messageText.text = ""
+                dateText.text = ""
+            }
+        }
         fun bind(chat: Chat) {
             binding.apply{
                 messageText.text = chat.massage
@@ -85,12 +103,20 @@ class ChatAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter
 
     class OtherChatViewHolder(private val binding: OtherChatItemBinding):
         ViewHolder(binding.root) {
+
+        fun init() {
+            binding.apply {
+                messageText.text = ""
+                dateText.text = ""
+                image.visibility = View.INVISIBLE
+            }
+        }
         fun bind(chat: Chat, isFirst: Boolean) {
             binding.apply{
                 messageText.text = chat.massage
                 dateText.text = chat.date
 
-                if (isFirst) image.visibility = View.VISIBLE
+                if (isFirst) image.visibility = View.VISIBLE else image.visibility = View.INVISIBLE
 
                 dateText.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
             }

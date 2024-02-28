@@ -50,10 +50,11 @@ class ChattingActivity : AppCompatActivity() {
 
         val listener = object : WebSocketListener() {
             override fun onMessage(webSocket: WebSocket, text: String) {
-                val chat = gson.fromJson(text, ResponseChat::class.java)
-                Log.d("확인 문자열1", chat.toString())
-                Log.d("확인 문자열2", text)
                 CoroutineScope(Dispatchers.Main).launch {
+                    val chat = gson.fromJson(text, ResponseChat::class.java)
+                    Log.d("확인 문자열1", chat.toString())
+                    Log.d("확인 문자열2", text)
+
                     if (chat.status) {
                         adapter.addChat(Chat(decodeBase64ToString(chat.data), false, convertISO8601ToTime(chat.time)))
                         binding.chatRecycler.scrollToPosition(adapter.getChat().size - 1)

@@ -94,10 +94,10 @@ class ChatFragment : Fragment() {
 
         val listener = object : WebSocketListener() {
             override fun onMessage(webSocket: WebSocket, text: String) {
-                val message = gson.fromJson(text, MatchingWaiting::class.java)
-                Log.d("확인", message.toString())
-                if (message.status) {
-                    CoroutineScope(Dispatchers.Main).launch {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val message = gson.fromJson(text, MatchingWaiting::class.java)
+
+                    if (message.status) {
                         binding.loadingBox.visibility = View.INVISIBLE
                         binding.readyBox.visibility = View.VISIBLE
                         binding.setHiddenButton.visibility = View.VISIBLE

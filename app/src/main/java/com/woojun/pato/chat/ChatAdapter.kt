@@ -62,7 +62,12 @@ class ChatAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter
         if (chatList[position].isUser) {
             (holder as ChatViewHolder).bind(chatList[position])
         } else {
-            (holder as OtherChatViewHolder).bind(chatList[position])
+            if (chatList.filter { !it.isUser }.size == 1) {
+                (holder as OtherChatViewHolder).bind(chatList[position], true)
+            } else {
+                val isFirst = chatList[position].date.last() != chatList[position - 1].date.last()
+                (holder as OtherChatViewHolder).bind(chatList[position], isFirst)
+            }
         }
     }
 
@@ -80,10 +85,12 @@ class ChatAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter
 
     class OtherChatViewHolder(private val binding: OtherChatItemBinding):
         ViewHolder(binding.root) {
-        fun bind(chat: Chat) {
+        fun bind(chat: Chat, isFirst: Boolean) {
             binding.apply{
                 messageText.text = chat.massage
                 dateText.text = chat.date
+
+                if (isFirst) image.visibility = View.VISIBLE
 
                 dateText.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
             }

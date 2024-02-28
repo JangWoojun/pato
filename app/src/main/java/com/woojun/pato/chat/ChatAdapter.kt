@@ -76,7 +76,8 @@ class ChatAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter
             if (position == firstNonUserIndex) {
                 (holder as OtherChatViewHolder).bind(chatItem, true)
             } else {
-                val isFirst = chatItem.date.last() != chatList[position - 1].date.last()
+                val otherChatList = chatList.filter { !it.isUser }
+                val isFirst = chatItem.date.last() != otherChatList[otherChatList.size - 2].date.last() || chatList[position - 1].isUser
                 (holder as OtherChatViewHolder).bind(chatItem, isFirst)
             }
         }

@@ -17,6 +17,9 @@ import com.woojun.pato.auth.AppPreferences
 import com.woojun.pato.databinding.FragmentChatBinding
 import com.woojun.pato.network.RetrofitAPI
 import com.woojun.pato.network.RetrofitClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -94,7 +97,7 @@ class ChatFragment : Fragment() {
                 val message = gson.fromJson(text, MatchingWaiting::class.java)
                 Log.d("확인", message.toString())
                 if (message.status) {
-                    activity?.runOnUiThread {
+                    CoroutineScope(Dispatchers.Main).launch {
                         binding.loadingBox.visibility = View.INVISIBLE
                         binding.readyBox.visibility = View.VISIBLE
                         binding.setHiddenButton.visibility = View.VISIBLE

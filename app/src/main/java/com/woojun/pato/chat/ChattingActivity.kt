@@ -59,7 +59,6 @@ class ChattingActivity : AppCompatActivity() {
                         adapter.addChat(Chat(decodeBase64ToString(chat.data), false, convertISO8601ToTime(chat.time)))
                         binding.chatRecycler.scrollToPosition(adapter.getChat().size - 1)
                     } else {
-                        adapter.addChat(Chat("상대가 대화를 종료하셨습니다", false, convertISO8601ToTime(chat.time)))
                         Toast.makeText(this@ChattingActivity, "상대가 대화를 종료하셨습니다", Toast.LENGTH_SHORT).show()
                     }
                 }

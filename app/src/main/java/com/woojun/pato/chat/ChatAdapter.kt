@@ -1,5 +1,6 @@
 package com.woojun.pato.chat
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,14 +73,7 @@ class ChatAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter
         if (chatItem.isUser) {
             (holder as ChatViewHolder).bind(chatItem)
         } else {
-            val firstNonUserIndex = chatList.indexOfFirst { !it.isUser }
-            if (position == firstNonUserIndex) {
-                (holder as OtherChatViewHolder).bind(chatItem, true)
-            } else {
-                val otherChatList = chatList.filter { !it.isUser }
-                val isFirst = chatItem.date.last() != otherChatList[otherChatList.size - 2].date.last() || chatList[position - 1].isUser
-                (holder as OtherChatViewHolder).bind(chatItem, isFirst)
-            }
+            (holder as OtherChatViewHolder).bind(chatItem)
         }
     }
 
@@ -112,12 +106,12 @@ class ChatAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter
                 image.visibility = View.INVISIBLE
             }
         }
-        fun bind(chat: Chat, isFirst: Boolean) {
+        fun bind(chat: Chat) {
             binding.apply{
                 messageText.text = chat.massage
                 dateText.text = chat.date
 
-                if (isFirst) image.visibility = View.VISIBLE else image.visibility = View.INVISIBLE
+                if (chat.imageShow) image.visibility = View.VISIBLE else image.visibility = View.INVISIBLE
 
                 dateText.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
             }

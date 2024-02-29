@@ -28,9 +28,14 @@ import java.util.Locale
 
 class ChattingActivity : AppCompatActivity() {
     private lateinit var binding:ActivityChattingBinding
+
     private val chatList = mutableListOf<Chat>()
     private val adapter = ChatAdapter(chatList)
     private var webSocket: WebSocket? = null
+
+    private var lastDate = 'a'
+    private var otherChatCheck = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,12 +57,16 @@ class ChattingActivity : AppCompatActivity() {
             override fun onMessage(webSocket: WebSocket, text: String) {
                 CoroutineScope(Dispatchers.Main).launch {
                     val chat = gson.fromJson(text, ResponseChat::class.java)
-                    Log.d("확인 문자열1", chat.toString())
-                    Log.d("확인 문자열2", text)
 
                     if (chat.status) {
-                        adapter.addChat(Chat(decodeBase64ToString(chat.data), false, convertISO8601ToTime(chat.time)))
+                        val date = convertISO8601ToTime(chat.time)
+                        val showImage = date.last() != lastDate || otherChatCheck
+
+                        adapter.addChat(Chat(decodeBase64ToString(chat.data), false, date, showImage))
                         binding.chatRecycler.scrollToPosition(adapter.getChat().size - 1)
+
+                        otherChatCheck = false
+                        lastDate = date.last()
                     } else {
                         Toast.makeText(this@ChattingActivity, "상대가 대화를 종료하셨습니다", Toast.LENGTH_SHORT).show()
                     }
@@ -87,11 +96,11 @@ class ChattingActivity : AppCompatActivity() {
         binding.sendButton.setOnClickListener {
             val chat = gson.toJson(RequestChat(encodeStringToBase64(binding.input.text.toString()), "chat"))
             webSocket!!.send(chat)
+            otherChatCheck = true
 
             adapter.addChat(Chat(binding.input.text.toString(), true, getDate()))
             binding.chatRecycler.scrollToPosition(adapter.getChat().size - 1)
             binding.input.text.clear()
-            Log.d("확인 채팅 보내기", chat.toString())
         }
     }
 

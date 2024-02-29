@@ -113,6 +113,7 @@ class ChattingActivity : AppCompatActivity() {
             val date = iso8601Format.parse(iso8601String)
             if (date != null) {
                 calendar.time = date
+                calendar.add(Calendar.HOUR_OF_DAY, -3)
 
                 val hourOfDay = calendar.get(Calendar.HOUR_OF_DAY)
                 val minute = calendar.get(Calendar.MINUTE)

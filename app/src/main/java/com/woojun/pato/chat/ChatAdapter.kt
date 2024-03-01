@@ -68,8 +68,25 @@ class ChatAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter
         }
     }
 
+    private fun Double.fromDpToPx(): Int =
+        (this * Resources.getSystem().displayMetrics.density).toInt()
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chatItem = chatList[position]
+
+        val layoutParams = holder.itemView.layoutParams as RecyclerView.LayoutParams
+
+        if (position == 0) {
+            layoutParams.setMargins(0, 22.0.fromDpToPx(), 0, 0)
+            holder.itemView.layoutParams = layoutParams
+        } else if (chatList[position - 1].isUser == chatItem.isUser) {
+            layoutParams.setMargins(0, 5.0.fromDpToPx(), 0, 0)
+            holder.itemView.layoutParams = layoutParams
+        } else {
+            layoutParams.setMargins(0, 22.0.fromDpToPx(), 0, 0)
+            holder.itemView.layoutParams = layoutParams
+        }
+
         if (chatItem.isUser) {
             (holder as ChatViewHolder).bind(chatItem)
         } else {

@@ -39,8 +39,7 @@ class ChattingActivity : AppCompatActivity() {
     private val adapter = ChatAdapter(chatList)
     private var webSocket: WebSocket? = null
 
-    private var lastDate = 'a'
-    private var otherChatCheck = false
+    private var profileImage = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,16 +62,12 @@ class ChattingActivity : AppCompatActivity() {
             override fun onMessage(webSocket: WebSocket, text: String) {
                 CoroutineScope(Dispatchers.Main).launch {
                     val chat = gson.fromJson(text, ResponseChat::class.java)
-
-                    if (chat.status) {
-                        val date = convertISO8601ToTime(chat.time)
-                        val showImage = date.last() != lastDate || otherChatCheck
-
-                        adapter.addChat(Chat(decodeBase64ToString(chat.data), false, date, showImage))
+                    if (chat.status && chat.type == "information") {
+                        profileImage = chat.opponent!!.image
+                        binding.nicknameText.text = chat.opponent.nickname
+                    } else if (chat.status && chat.type == "recivedChat") {
+                        adapter.addChat(Chat(profileImage, decodeBase64ToString(chat.data), false, convertISO8601ToTime(chat.time), true))
                         binding.chatRecycler.scrollToPosition(adapter.getChat().size - 1)
-
-                        otherChatCheck = false
-                        lastDate = date.last()
                     } else {
                         Toast.makeText(this@ChattingActivity, "상대가 대화를 종료하셨습니다", Toast.LENGTH_SHORT).show()
                     }
@@ -102,9 +97,8 @@ class ChattingActivity : AppCompatActivity() {
             if (binding.input.text.isNotEmpty()) {
                 val chat = gson.toJson(RequestChat(encodeStringToBase64(binding.input.text.toString()), "chat"))
                 webSocket!!.send(chat)
-                otherChatCheck = true
 
-                adapter.addChat(Chat(binding.input.text.toString(), true, getDate()))
+                adapter.addChat(Chat(profileImage, binding.input.text.toString(), true, getDate()))
                 binding.chatRecycler.scrollToPosition(adapter.getChat().size - 1)
                 binding.input.text.clear()
             }

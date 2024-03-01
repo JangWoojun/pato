@@ -126,6 +126,11 @@ class ChattingActivity : AppCompatActivity() {
             }
         })
 
+        setKeyboardVisibilityListener(object : OnKeyboardVisibilityListener {
+            override fun onVisibilityChanged(visible: Boolean) {
+                if (visible) binding.chatRecycler.scrollToPosition(adapter.getChat().size - 1)
+            }
+        })
     }
 
     private fun decodeBase64ToString(base64String: String): String {
@@ -186,5 +191,33 @@ class ChattingActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         webSocket?.close(1000, null)
+    }
+
+    interface OnKeyboardVisibilityListener {
+        fun onVisibilityChanged(visible: Boolean)
+    }
+
+    private fun AppCompatActivity.setKeyboardVisibilityListener(onKeyboardVisibilityListener: OnKeyboardVisibilityListener) {
+        val parentView = (findViewById<ViewGroup>(android.R.id.content)).getChildAt(0)
+        parentView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            private var alreadyOpen = false
+            private val defaultKeyboardHeightDP = 100
+            private val estimatedKeyboardDP = defaultKeyboardHeightDP + 48
+            private val rect = Rect()
+
+            override fun onGlobalLayout() {
+                val estimatedKeyboardHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, estimatedKeyboardDP.toFloat(), parentView.resources.displayMetrics).toInt()
+                parentView.getWindowVisibleDisplayFrame(rect)
+                val heightDiff = parentView.rootView.height - (rect.bottom - rect.top)
+                val isShown = heightDiff >= estimatedKeyboardHeight
+
+                if (isShown == alreadyOpen) {
+                    println("Ignoring global layout change...")
+                    return
+                }
+                alreadyOpen = isShown
+                onKeyboardVisibilityListener.onVisibilityChanged(isShown)
+            }
+        })
     }
 }

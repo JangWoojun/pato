@@ -1,11 +1,13 @@
-package com.woojun.pato.chat
+package com.woojun.pato.match
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.woojun.pato.chat.ChattingActivity
 import com.woojun.pato.databinding.UserItemBinding
+import com.woojun.pato.match.dataClass.UserInfo
 
 class UserInfoAdapter(private val userInfoList: MutableList<UserInfo>): RecyclerView.Adapter<UserInfoAdapter.UserInfoViewHolder>() {
 

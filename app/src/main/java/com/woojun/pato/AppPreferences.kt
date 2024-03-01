@@ -1,4 +1,4 @@
-package com.woojun.pato.auth
+package com.woojun.pato
 
 import android.content.Context
 import android.content.SharedPreferences

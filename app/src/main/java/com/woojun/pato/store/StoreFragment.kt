@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.woojun.pato.EdgeItemDecoration
 import com.woojun.pato.databinding.FragmentStoreBinding
+import com.woojun.pato.store.dataClass.Store
 
 class StoreFragment : Fragment() {
 

@@ -1,15 +1,13 @@
 package com.woojun.pato
 
-import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.core.content.ContextCompat
-import com.woojun.pato.auth.AppPreferences
 import com.woojun.pato.auth.LoginActivity
-import com.woojun.pato.auth.ProfileActivity
+import com.woojun.pato.profile.ProfileActivity
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.woojun.pato.store
+package com.woojun.pato.store.dataClass
 
 data class Store (
     val name: String,

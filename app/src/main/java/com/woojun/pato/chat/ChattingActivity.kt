@@ -17,7 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.woojun.pato.BuildConfig
 import com.woojun.pato.R
-import com.woojun.pato.auth.AppPreferences
+import com.woojun.pato.AppPreferences
+import com.woojun.pato.chat.dataClass.Chat
+import com.woojun.pato.chat.dataClass.RequestChat
+import com.woojun.pato.chat.dataClass.ResponseChat
 import com.woojun.pato.databinding.ActivityChattingBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +39,7 @@ class ChattingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChattingBinding
 
     private val chatList = mutableListOf<Chat>()
-    private val adapter = ChatAdapter(chatList)
+    private val adapter = ChattingAdapter(chatList)
     private var webSocket: WebSocket? = null
 
     private var profileImage = ""

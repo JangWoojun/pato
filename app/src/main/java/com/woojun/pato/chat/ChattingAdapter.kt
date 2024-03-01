@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.woojun.pato.chat.dataClass.Chat
 import com.woojun.pato.databinding.ChatItemBinding
 import com.woojun.pato.databinding.OtherChatItemBinding
 
-class ChatAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter<ViewHolder>() {
+class ChattingAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {

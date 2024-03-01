@@ -1,12 +1,12 @@
 package com.woojun.pato.network
 
-import com.woojun.pato.auth.CheckNicknameRequest
-import com.woojun.pato.auth.CheckResponse
-import com.woojun.pato.auth.JwtToken
-import com.woojun.pato.auth.Profile
-import com.woojun.pato.auth.ProfileImageRequest
-import com.woojun.pato.auth.ProfileRequest
-import com.woojun.pato.chat.Matching
+import com.woojun.pato.auth.dataClass.CheckNicknameRequest
+import com.woojun.pato.auth.dataClass.CheckResponse
+import com.woojun.pato.auth.dataClass.JwtToken
+import com.woojun.pato.profile.dataClass.Profile
+import com.woojun.pato.profile.dataClass.ProfileImageRequest
+import com.woojun.pato.profile.dataClass.ProfileRequest
+import com.woojun.pato.match.dataClass.Matching
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET

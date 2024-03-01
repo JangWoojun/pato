@@ -1,4 +1,4 @@
-package com.woojun.pato.auth
+package com.woojun.pato.auth.dataClass
 
 data class JwtToken(
     val now: String,

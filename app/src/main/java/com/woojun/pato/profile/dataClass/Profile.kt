@@ -1,4 +1,4 @@
-package com.woojun.pato.auth
+package com.woojun.pato.profile.dataClass
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

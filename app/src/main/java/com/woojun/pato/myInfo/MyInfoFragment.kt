@@ -10,9 +10,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.woojun.pato.auth.AppPreferences
-import com.woojun.pato.auth.Profile
-import com.woojun.pato.auth.ProfileActivity
+import com.woojun.pato.AppPreferences
+import com.woojun.pato.profile.dataClass.Profile
+import com.woojun.pato.profile.ProfileActivity
 import com.woojun.pato.databinding.FragmentMyInfoBinding
 import com.woojun.pato.network.RetrofitAPI
 import com.woojun.pato.network.RetrofitClient

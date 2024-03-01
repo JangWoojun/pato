@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.woojun.pato.databinding.StoreItemBinding
+import com.woojun.pato.store.dataClass.Store
 
 class StoreAdapter(private val storeList: MutableList<Store>): RecyclerView.Adapter<StoreAdapter.StoreViewHolder>() {
 

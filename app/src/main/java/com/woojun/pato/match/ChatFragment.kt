@@ -1,4 +1,4 @@
-package com.woojun.pato.chat
+package com.woojun.pato.match
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,8 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.woojun.pato.BuildConfig
 import com.woojun.pato.R
-import com.woojun.pato.auth.AppPreferences
+import com.woojun.pato.AppPreferences
+import com.woojun.pato.chat.ChattingActivity
 import com.woojun.pato.databinding.FragmentChatBinding
+import com.woojun.pato.match.dataClass.Matching
+import com.woojun.pato.match.dataClass.MatchingWaiting
+import com.woojun.pato.match.dataClass.UserInfo
 import com.woojun.pato.network.RetrofitAPI
 import com.woojun.pato.network.RetrofitClient
 import kotlinx.coroutines.CoroutineScope

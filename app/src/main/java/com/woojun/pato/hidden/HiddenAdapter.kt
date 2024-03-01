@@ -1,11 +1,11 @@
-package com.woojun.pato.chat
+package com.woojun.pato.hidden
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.woojun.pato.databinding.HiddenItemBinding
-import com.woojun.pato.databinding.UserItemBinding
+import com.woojun.pato.hidden.dataClass.Hidden
 
 class HiddenAdapter(private val hiddenList: MutableList<Hidden>): RecyclerView.Adapter<HiddenAdapter.HiddenViewHolder>() {
 

@@ -6,7 +6,7 @@
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbars="none"
-    tools:context=".chat.ChatFragment">
+    tools:context=".match.ChatFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@color/white"

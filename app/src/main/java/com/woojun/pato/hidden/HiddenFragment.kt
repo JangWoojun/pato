@@ -1,4 +1,4 @@
-package com.woojun.pato.chat
+package com.woojun.pato.hidden
 
 import android.content.res.Resources
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.woojun.pato.EdgeItemDecoration
 import com.woojun.pato.R
 import com.woojun.pato.databinding.FragmentHiddenBinding
+import com.woojun.pato.hidden.dataClass.Hidden
 
 class HiddenFragment : Fragment() {
     private var _binding: FragmentHiddenBinding? = null
@@ -61,7 +62,8 @@ class HiddenFragment : Fragment() {
             "",
             "최수빈(24)",
             "5km 내외"
-        ),Hidden(
+        ),
+        Hidden(
             "",
             "최수빈(24)",
             "5km 내외"

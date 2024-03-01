@@ -12,11 +12,15 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.woojun.pato.AppPreferences
 import com.woojun.pato.MainActivity
 import com.woojun.pato.R
+import com.woojun.pato.auth.dataClass.JwtToken
 import com.woojun.pato.databinding.ActivityLoginBinding
 import com.woojun.pato.network.RetrofitAPI
 import com.woojun.pato.network.RetrofitClient
+import com.woojun.pato.profile.dataClass.Profile
+import com.woojun.pato.profile.ProfileActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

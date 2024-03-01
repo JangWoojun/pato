@@ -1,4 +1,4 @@
-package com.woojun.pato.chat
+package com.woojun.pato.chat.dataClass
 
 data class RequestChat(
     val data: String,

@@ -1,4 +1,4 @@
-package com.woojun.pato.chat
+package com.woojun.pato.match.dataClass
 
 data class Matching(
     val chatID: String,

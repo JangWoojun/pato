@@ -1,4 +1,4 @@
-package com.woojun.pato.auth
+package com.woojun.pato.profile.dataClass
 
 data class ProfileRequest(
     val nickname: String,

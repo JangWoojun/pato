@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.woojun.pato.chat.ChatFragment"
+        android:name="com.woojun.pato.match.ChatFragment"
         android:label="fragment_chat"
         tools:layout="@layout/fragment_chat" />
     <fragment
@@ -27,7 +27,7 @@
         tools:layout="@layout/fragment_chatting" />
     <fragment
         android:id="@+id/hiddenFragment"
-        android:name="com.woojun.pato.chat.HiddenFragment"
+        android:name="com.woojun.pato.hidden.HiddenFragment"
         android:label="fragment_hidden"
         tools:layout="@layout/fragment_hidden" />
 </navigation>

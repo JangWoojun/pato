@@ -1,4 +1,4 @@
-package com.woojun.pato.auth
+package com.woojun.pato.profile
 
 import android.content.Context
 import android.content.Intent
@@ -29,9 +29,15 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.woojun.pato.MainActivity
 import com.woojun.pato.R
+import com.woojun.pato.AppPreferences
+import com.woojun.pato.auth.dataClass.CheckNicknameRequest
+import com.woojun.pato.auth.dataClass.CheckResponse
 import com.woojun.pato.databinding.ActivityProfileBinding
 import com.woojun.pato.network.RetrofitAPI
 import com.woojun.pato.network.RetrofitClient
+import com.woojun.pato.profile.dataClass.Profile
+import com.woojun.pato.profile.dataClass.ProfileImageRequest
+import com.woojun.pato.profile.dataClass.ProfileRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

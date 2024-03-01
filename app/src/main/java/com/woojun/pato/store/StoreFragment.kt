@@ -85,7 +85,7 @@ class StoreFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.storeRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
+        if (isAdded) binding.storeRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
         binding.storeRecycler.adapter = StoreAdapter(list)
         binding.storeRecycler.addItemDecoration(EdgeItemDecoration(3, 7f.fromDpToPx()))
 

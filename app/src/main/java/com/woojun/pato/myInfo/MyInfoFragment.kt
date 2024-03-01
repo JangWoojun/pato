@@ -42,14 +42,16 @@ class MyInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getProfile(requireContext(), AppPreferences.token)
+        if (isAdded) {
+            getProfile(requireContext(), AppPreferences.token)
 
-        binding.editButton.setOnClickListener {
-            val intent = Intent(requireContext(), ProfileActivity::class.java).apply {
-                putExtra("isEdit", true)
-                putExtra("profile", profile)
+            binding.editButton.setOnClickListener {
+                val intent = Intent(requireContext(), ProfileActivity::class.java).apply {
+                    putExtra("isEdit", true)
+                    putExtra("profile", profile)
+                }
+                startActivity(intent)
             }
-            startActivity(intent)
         }
 
     }

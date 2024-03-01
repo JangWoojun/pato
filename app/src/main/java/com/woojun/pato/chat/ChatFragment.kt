@@ -60,7 +60,7 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.userInfoRecycler.layoutManager = LinearLayoutManager(requireContext())
+        if (isAdded) binding.userInfoRecycler.layoutManager = LinearLayoutManager(requireContext())
         binding.userInfoRecycler.adapter = UserInfoAdapter(list)
 
         binding.hiddenButton.setOnClickListener {
@@ -68,7 +68,7 @@ class ChatFragment : Fragment() {
         }
 
         binding.matchingStartButton.setOnClickListener {
-            matchingStart("Bearer ${AppPreferences.token}")
+            if (isAdded) matchingStart("Bearer ${AppPreferences.token}")
         }
 
         binding.setHiddenButton.setOnClickListener {
@@ -102,7 +102,7 @@ class ChatFragment : Fragment() {
                         binding.readyBox.visibility = View.VISIBLE
                         binding.setHiddenButton.visibility = View.VISIBLE
                         Log.d("확인", "이동")
-                        startActivity(Intent(requireContext(), ChattingActivity::class.java))
+                        if (isAdded) startActivity(Intent(requireContext(), ChattingActivity::class.java))
                     }
                 }
             }

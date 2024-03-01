@@ -137,11 +137,11 @@ class ChatFragment : Fragment() {
                     binding.setHiddenButton.visibility = View.INVISIBLE
                     matchingWaiting()
                 } else {
-                    Toast.makeText(context, "매칭에 실패하였습니다", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "매칭에 실패하였습니다", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onFailure(call: Call<Matching>, t: Throwable) {
-                Toast.makeText(context, "매칭에 실패하였습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "매칭에 실패하였습니다", Toast.LENGTH_SHORT).show()
             }
         })
     }

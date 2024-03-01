@@ -123,6 +123,8 @@ class ChatAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter
                 messageText.text = chat.massage
                 dateText.text = chat.date
 
+                if (chat.viewShow) dateText.visibility = View.VISIBLE else dateText.visibility = View.INVISIBLE
+
                 dateText.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
             }
         }

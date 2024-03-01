@@ -66,7 +66,7 @@ class ChattingActivity : AppCompatActivity() {
                         profileImage = chat.opponent!!.image
                         binding.nicknameText.text = chat.opponent.nickname
                     } else if (chat.status && chat.type == "recivedChat") {
-                        adapter.addChat(Chat(profileImage, decodeBase64ToString(chat.data), false, convertISO8601ToTime(chat.time), true))
+                        adapter.addChat(Chat(profileImage, decodeBase64ToString(chat.data), false, convertISO8601ToTime(chat.time)))
                         binding.chatRecycler.scrollToPosition(adapter.getChat().size - 1)
                     } else {
                         Toast.makeText(this@ChattingActivity, "상대가 대화를 종료하셨습니다", Toast.LENGTH_SHORT).show()

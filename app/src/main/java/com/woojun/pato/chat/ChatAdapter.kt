@@ -1,6 +1,6 @@
 package com.woojun.pato.chat
 
-import android.util.Log
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,9 +42,22 @@ class ChatAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter
     }
 
     fun addChat(chat: Chat) {
+        val position = chatList.size
         chatList.add(chat)
 
-        notifyItemInserted(chatList.size - 1)
+        if (position > 0) {
+            val currentUserIsUser = chatList[position].isUser
+            val previousUserIsUser = chatList[position - 1].isUser
+            val currentDateLast = chatList[position].date.last()
+            val previousDateLast = chatList[position - 1].date.last()
+
+            if ((currentDateLast == previousDateLast) && (currentUserIsUser == previousUserIsUser)) {
+                chatList[position - 1].imageShow = false
+                notifyItemRangeChanged(position - 1, 2)
+            }
+        } else {
+            notifyItemInserted(chatList.size - 1)
+        }
     }
 
     fun getChat(): List<Chat> {

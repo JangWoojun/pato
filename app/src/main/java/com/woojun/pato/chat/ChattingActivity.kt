@@ -1,10 +1,17 @@
 package com.woojun.pato.chat
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Base64
-import android.util.Log
+import android.util.TypedValue
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
@@ -19,7 +26,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
-import okio.ByteString
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -27,7 +33,7 @@ import java.util.Calendar
 import java.util.Locale
 
 class ChattingActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityChattingBinding
+    private lateinit var binding: ActivityChattingBinding
 
     private val chatList = mutableListOf<Chat>()
     private val adapter = ChatAdapter(chatList)
@@ -75,7 +81,6 @@ class ChattingActivity : AppCompatActivity() {
 
             override fun onOpen(webSocket: WebSocket, response: okhttp3.Response) {
                 super.onOpen(webSocket, response)
-                Log.d("확인", "시작")
             }
 
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
@@ -94,14 +99,33 @@ class ChattingActivity : AppCompatActivity() {
         }
 
         binding.sendButton.setOnClickListener {
-            val chat = gson.toJson(RequestChat(encodeStringToBase64(binding.input.text.toString()), "chat"))
-            webSocket!!.send(chat)
-            otherChatCheck = true
+            if (binding.input.text.isNotEmpty()) {
+                val chat = gson.toJson(RequestChat(encodeStringToBase64(binding.input.text.toString()), "chat"))
+                webSocket!!.send(chat)
+                otherChatCheck = true
 
-            adapter.addChat(Chat(binding.input.text.toString(), true, getDate()))
-            binding.chatRecycler.scrollToPosition(adapter.getChat().size - 1)
-            binding.input.text.clear()
+                adapter.addChat(Chat(binding.input.text.toString(), true, getDate()))
+                binding.chatRecycler.scrollToPosition(adapter.getChat().size - 1)
+                binding.input.text.clear()
+            }
         }
+
+        binding.input.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.toString().isNotEmpty()) {
+                    binding.sendIcon.imageTintList = ColorStateList.valueOf(Color.parseColor("#FF5656"))
+                } else{
+                    binding.sendIcon.imageTintList = ColorStateList.valueOf(Color.parseColor("#C4C4C4"))
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+
     }
 
     private fun decodeBase64ToString(base64String: String): String {

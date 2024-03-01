@@ -54,9 +54,9 @@ class ChatAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter
             val previousDateLast = chatList[position - 1].date.last()
 
             if ((currentDateLast == previousDateLast) && (currentUserIsUser == previousUserIsUser)) {
-                chatList[position - 1].imageShow = false
-                notifyItemRangeChanged(position - 1, 2)
+                chatList[position - 1].viewShow = false
             }
+            notifyItemRangeChanged(position - 1, 1)
         } else {
             notifyItemInserted(chatList.size - 1)
         }
@@ -148,7 +148,13 @@ class ChatAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(binding.imageView)
 
-                if (chat.imageShow) image.visibility = View.VISIBLE else image.visibility = View.INVISIBLE
+                if (chat.viewShow) {
+                    image.visibility = View.VISIBLE
+                    dateText.visibility = View.VISIBLE
+                } else {
+                    image.visibility = View.INVISIBLE
+                    dateText.visibility = View.INVISIBLE
+                }
 
                 dateText.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
             }

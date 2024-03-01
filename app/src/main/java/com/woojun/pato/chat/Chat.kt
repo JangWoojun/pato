@@ -5,5 +5,5 @@ data class Chat(
     val massage: String = "",
     val isUser: Boolean = true,
     val date: String = "",
-    var imageShow: Boolean = false
+    var viewShow: Boolean = true
 )

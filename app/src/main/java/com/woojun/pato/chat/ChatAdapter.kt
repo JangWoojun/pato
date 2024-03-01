@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.woojun.pato.databinding.ChatItemBinding
 import com.woojun.pato.databinding.OtherChatItemBinding
 
@@ -140,6 +142,11 @@ class ChatAdapter(private val chatList: MutableList<Chat>): RecyclerView.Adapter
             binding.apply{
                 messageText.text = chat.massage
                 dateText.text = chat.date
+                Glide.with(binding.root.context)
+                    .load(chat.profileImage)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(binding.imageView)
 
                 if (chat.imageShow) image.visibility = View.VISIBLE else image.visibility = View.INVISIBLE
 

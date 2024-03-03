@@ -105,21 +105,17 @@ class ChatFragment : Fragment() {
                     val message = gson.fromJson(text, MatchingWaiting::class.java)
 
                     if (message.status) {
-                        Log.d("확인", "이동")
+                        binding.loadingBox.visibility = View.INVISIBLE
+                        binding.readyBox.visibility = View.VISIBLE
+                        binding.setHiddenButton.visibility = View.VISIBLE
                         if (isAdded) startActivity(Intent(requireContext(), ChattingActivity::class.java))
                     }
                 }
             }
 
-            override fun onOpen(webSocket: WebSocket, response: okhttp3.Response) {
-                super.onOpen(webSocket, response)
-                Log.d("확인", "시작")
-            }
-
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
                 super.onClosing(webSocket, code, reason)
                 webSocket.close(1000, null)
-                Log.d("확인", "닫힘")
             }
         }
 
@@ -133,14 +129,17 @@ class ChatFragment : Fragment() {
 
         call.enqueue(object : Callback<Matching> {
             override fun onResponse(call: Call<Matching>, response: Response<Matching>) {
-                binding.loadingBox.visibility = View.INVISIBLE
-                binding.readyBox.visibility = View.VISIBLE
-                binding.setHiddenButton.visibility = View.VISIBLE
                 if (response.isSuccessful && response.body()!!.status == "matched") {
+                    binding.loadingBox.visibility = View.INVISIBLE
+                    binding.readyBox.visibility = View.VISIBLE
+                    binding.setHiddenButton.visibility = View.VISIBLE
                     startActivity(Intent(requireContext(), ChattingActivity::class.java))
                 } else if (response.isSuccessful && response.body()!!.status == "waiting") {
                     matchingWaiting()
                 } else {
+                    binding.loadingBox.visibility = View.INVISIBLE
+                    binding.readyBox.visibility = View.VISIBLE
+                    binding.setHiddenButton.visibility = View.VISIBLE
                     Toast.makeText(requireContext(), "매칭에 실패하였습니다", Toast.LENGTH_SHORT).show()
                 }
             }

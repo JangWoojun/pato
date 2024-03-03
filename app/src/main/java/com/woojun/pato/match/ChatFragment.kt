@@ -72,6 +72,9 @@ class ChatFragment : Fragment() {
         }
 
         binding.matchingStartButton.setOnClickListener {
+            binding.loadingBox.visibility = View.VISIBLE
+            binding.readyBox.visibility = View.INVISIBLE
+            binding.setHiddenButton.visibility = View.INVISIBLE
             if (isAdded) matchingStart("Bearer ${AppPreferences.token}")
         }
 
@@ -102,9 +105,6 @@ class ChatFragment : Fragment() {
                     val message = gson.fromJson(text, MatchingWaiting::class.java)
 
                     if (message.status) {
-                        binding.loadingBox.visibility = View.INVISIBLE
-                        binding.readyBox.visibility = View.VISIBLE
-                        binding.setHiddenButton.visibility = View.VISIBLE
                         Log.d("확인", "이동")
                         if (isAdded) startActivity(Intent(requireContext(), ChattingActivity::class.java))
                     }
@@ -133,18 +133,21 @@ class ChatFragment : Fragment() {
 
         call.enqueue(object : Callback<Matching> {
             override fun onResponse(call: Call<Matching>, response: Response<Matching>) {
+                binding.loadingBox.visibility = View.INVISIBLE
+                binding.readyBox.visibility = View.VISIBLE
+                binding.setHiddenButton.visibility = View.VISIBLE
                 if (response.isSuccessful && response.body()!!.status == "matched") {
                     startActivity(Intent(requireContext(), ChattingActivity::class.java))
                 } else if (response.isSuccessful && response.body()!!.status == "waiting") {
-                    binding.loadingBox.visibility = View.VISIBLE
-                    binding.readyBox.visibility = View.INVISIBLE
-                    binding.setHiddenButton.visibility = View.INVISIBLE
                     matchingWaiting()
                 } else {
                     Toast.makeText(requireContext(), "매칭에 실패하였습니다", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onFailure(call: Call<Matching>, t: Throwable) {
+                binding.loadingBox.visibility = View.INVISIBLE
+                binding.readyBox.visibility = View.VISIBLE
+                binding.setHiddenButton.visibility = View.VISIBLE
                 Toast.makeText(requireContext(), "매칭에 실패하였습니다", Toast.LENGTH_SHORT).show()
             }
         })

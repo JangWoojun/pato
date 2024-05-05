@@ -152,4 +152,12 @@ class ChatFragment : Fragment() {
         })
     }
 
+    override fun onStop() {
+        super.onStop()
+        webSocket?.close(1000, null)
+        binding.loadingBox.visibility = View.INVISIBLE
+        binding.readyBox.visibility = View.VISIBLE
+        binding.setHiddenButton.visibility = View.VISIBLE
+    }
+
 }
